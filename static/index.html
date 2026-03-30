@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Consult - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        nav {
+            background: #000000;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        nav h1 {
+            font-size: 1.8rem;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        nav .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+        nav .nav-links a:hover {
+            color: #3b82f6;
+        }
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://source.unsplash.com/random/1600x900/?business');
+            background-size: cover;
+            background-position: center;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: fadeIn 1s ease-in;
+        }
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: #d1d5db;
+        }
+        .buttons a {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin: 0 0.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .login-btn {
+            background: #3b82f6;
+            color: #ffffff;
+        }
+        .login-btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .signup-btn {
+            background: transparent;
+            border: 2px solid #3b82f6;
+            color: #3b82f6;
+        }
+        .signup-btn:hover {
+            background: #3b82f6;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            nav h1 { font-size: 1.5rem; }
+            nav .nav-links a { font-size: 0.9rem; margin-left: 1rem; }
+            .hero h2 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>Meta Consult</h1>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+        </div>
+    </nav>
+    <section class="hero">
+        <h2>Welcome to Meta Consult</h2>
+        <p>Unlock the potential of your business with AI-powered consultancy. Our intelligent agents provide tailored solutions to drive growth, optimize operations, and solve complex challenges for companies and small enterprises.</p>
+        <div class="buttons">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="signup.html" class="signup-btn">Sign Up</a>
+        </div>
+    </section>
+</body>
+</html>

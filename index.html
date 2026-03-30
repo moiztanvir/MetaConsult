@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="0; url=/static/index.html">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Redirecting…</title>
+    <script>
+        // JS fallback for user-agents that ignore meta refresh
+        (function(){
+            var target = '/static/index.html';
+            if (location.pathname !== '/' && location.pathname !== '/index.html') {
+                // If served from subpath, preserve origin and redirect relative to it
+                target = location.origin + '/static/index.html';
+            }
+            window.location.replace(target);
+        })();
+    </script>
+</head>
+<body>
+    <p>Redirecting to the app… If you are not redirected, <a href="/static/index.html">click here</a>.</p>
+</body>
+</html>
+

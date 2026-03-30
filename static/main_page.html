@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Consult - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Glassy effect (glassmorphism) */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .glass-strong {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.5);
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 260px;
+            padding: 20px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 30px;
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            color: #d1d5db;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+            transform: translateX(5px);
+        }
+
+        .nav-item.active {
+            background: rgba(59, 130, 246, 0.3);
+            color: #3b82f6;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .nav-item i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: 260px;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        /* Section styling */
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #9ca3af;
+            font-size: 1.1rem;
+        }
+
+        /* Card styling */
+        .card {
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.6);
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Chat interface */
+        .chat-box {
+            scroll-behavior: smooth;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .chat-box::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-box::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .chat-box::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 4px;
+        }
+
+        .chat-message {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        /* KPI Cards */
+        .kpi-card {
+            text-align: center;
+            padding: 25px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card:hover {
+            transform: scale(1.05);
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin: 10px 0;
+        }
+
+        .kpi-label {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Chart container */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 20px;
+        }
+
+        /* Contact cards */
+        .contact-card {
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .contact-email {
+            color: #3b82f6;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 15px;
+            word-break: break-all;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar glass-strong">
+        <div class="sidebar-logo">Meta Consult</div>
+        <nav>
+            <a class="nav-item active" onclick="showSection('home')">
+                <i>🏠</i> <span>Home</span>
+            </a>
+            <a class="nav-item" onclick="showSection('dashboard')">
+                <i>📊</i> <span>Dashboard</span>
+            </a>
+            <a class="nav-item" onclick="showSection('docs')">
+                <i>📚</i> <span>Docs</span>
+            </a>
+            <a class="nav-item" onclick="showSection('chat')">
+                <i>💬</i> <span>Chat</span>
+            </a>
+            <a class="nav-item" onclick="showSection('solution')">
+                <i>📄</i> <span>Solution</span>
+            </a>
+            <a class="nav-item" onclick="showSection('contact')">
+                <i>📧</i> <span>Contact</span>
+            </a>
+            <button class="nav-item" id="logout-btn" style="width: 100%; border: none; background: none; text-align: left;">
+                <i>🚪</i> <span>Logout</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Home Section -->
+        <section id="home-section" class="section active">
+            <div class="page-header">
+                <h1>Welcome to Meta Consult</h1>
+                <p>AI-Powered Business Consultancy</p>
+            </div>
+            
+            <div class="card glass-strong">
+                <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: #3b82f6;">About Meta Consult</h2>
+                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
+                    Meta Consult is an innovative AI-powered business consultancy platform designed to revolutionize how companies approach problem-solving and strategic planning. We leverage cutting-edge artificial intelligence and multi-agent workflows to provide comprehensive, data-driven solutions tailored to your specific business challenges.
+                </p>
+                
+                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">Our Mission</h3>
+                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
+                    Our mission is to democratize access to high-quality business consultancy by combining the power of artificial intelligence with deep domain expertise. We help businesses of all sizes identify problems, analyze root causes, and develop actionable solutions that drive growth, optimize operations, and enhance competitive positioning.
+                </p>
+
+                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">Key Benefits</h3>
+                <ul style="line-height: 2; font-size: 1.1rem; color: #d1d5db; margin-left: 20px; margin-bottom: 20px;">
+                    <li><strong style="color: #3b82f6;">Intelligent Problem Analysis:</strong> Our AI agents conduct thorough analysis of your business challenges, identifying underlying issues and their interconnected impacts.</li>
+                    <li><strong style="color: #3b82f6;">Multi-Agent Collaboration:</strong> Specialized AI agents work together, each focusing on different aspects like strategic planning, market research, technology solutions, and management strategies.</li>
+                    <li><strong style="color: #3b82f6;">Comprehensive Solutions:</strong> Receive detailed, actionable solution reports backed by real-world research and best practices from across industries.</li>
+                    <li><strong style="color: #3b82f6;">Data-Driven Insights:</strong> Leverage web search capabilities to incorporate the latest market trends, industry benchmarks, and successful case studies into your solutions.</li>
+                    <li><strong style="color: #3b82f6;">Streamlined Workflow:</strong> From initial conversation to final solution report, our agentic workflow automates complex processes, saving time and ensuring consistency.</li>
+                    <li><strong style="color: #3b82f6;">Personalized Approach:</strong> Every solution is tailored to your company's specific context, industry, and unique challenges.</li>
+                </ul>
+
+                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">Agentic Workflow</h3>
+                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
+                    Meta Consult employs a sophisticated multi-agent workflow that transforms your business conversations into comprehensive solutions:
+                </p>
+                <ol style="line-height: 2; font-size: 1.1rem; color: #d1d5db; margin-left: 20px; margin-bottom: 20px;">
+                    <li><strong style="color: #3b82f6;">Conversation Phase:</strong> Our AI consultant engages in detailed conversations to understand your business challenges, asking targeted questions to gather comprehensive information.</li>
+                    <li><strong style="color: #3b82f6;">Proposal Generation:</strong> Once sufficient information is gathered, our Proposal Agent generates a structured problem analysis document that outlines the issues, their root causes, and impacts across financial, operational, and strategic dimensions.</li>
+                    <li><strong style="color: #3b82f6;">Domain Classification:</strong> The Planner Agent analyzes your proposal using advanced reasoning to classify it into relevant strategic domains (Strategic Planning, Market Research, Technology, Management, etc.).</li>
+                    <li><strong style="color: #3b82f6;">Web Search & Research:</strong> Specialized Web Search Agents search the internet for solutions, case studies, and best practices in the identified domains, gathering actionable insights from across industries.</li>
+                    <li><strong style="color: #3b82f6;">Solution Generation:</strong> Our AI synthesizes all gathered information to create a comprehensive solution report with implementation roadmaps, risk mitigation strategies, and expected ROI.</li>
+                    <li><strong style="color: #3b82f6;">Document Delivery:</strong> Receive your solution as a professionally formatted PDF document ready for implementation.</li>
+                </ol>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <button onclick="showSection('chat')" class="btn-primary" style="font-size: 1.2rem; padding: 15px 40px;">
+                        Start Chat →
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="section">
+            <div class="page-header">
+                <h1>Dashboard</h1>
+                <p>Your Business Insights at a Glance</p>
+            </div>
+
+            <div id="dashboard-content">
+                <div style="text-align: center; padding: 40px;">
+                    <div class="spinner" style="border: 4px solid rgba(59, 130, 246, 0.1); border-top: 4px solid #3b82f6; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                    <p style="margin-top: 20px; color: #9ca3af;">Loading dashboard data...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Docs Section -->
+        <section id="docs-section" class="section">
+            <div class="page-header">
+                <h1>Documentation</h1>
+                <p>How Meta Consult Works</p>
+            </div>
+
+            <div class="card glass-strong">
+                <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: #3b82f6;">How It Works</h2>
+                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 25px;">
+                    Meta Consult leverages a sophisticated multi-agent AI system to transform your business challenges into actionable solutions. Here's how our unique workflow operates:
+                </p>
+
+                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">1. Initial Consultation</h3>
+                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
+                    Begin by chatting with our AI consultant about your business challenges. The system asks targeted questions to understand your company's context, industry, specific problems, and desired outcomes. This conversation phase ensures we have comprehensive information before moving to analysis.
+                </p>
+
+                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">2. Problem Analysis & Proposal Generation</h3>
+                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
+                    After gathering sufficient information (typically after 5+ exchanges), our Proposal Agent automatically generates a detailed problem analysis document. This document includes:
+                </p>
+                <ul style="line-height: 2; font-size: 1.1rem; color: #d1d5db; margin-left: 20px; margin-bottom: 20px;">
+                    <li>Executive Summary of the problem</li>
+                    <li>Detailed Problem Statement</li>
+                    <li>Key Reasons and Root Causes</li>
+                    <li>Financial Impact Analysis</li>
+                    <li>Operational Impact Assessment</li>
+                    <li>Strategic Impact Evaluation</li>
+                </ul>
+
+                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">3. Domain Classification</h3>
+                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
+                    Our Planner Agent uses advanced AI reasoning to analyze your proposal and classify it into one or more strategic domains:
+                </p>
+                <ul style="line-height: 2; font-size: 1.1rem; color: #d1d5db; margin-left: 20px; margin-bottom: 20px;">
+                    <li><strong style="color: #3b82f6;">Strategic Planning:</strong> Long-term vision, growth strategies, competitive positioning</li>
+                    <li><strong style="color: #3b82f6;">Market Research:</strong> Market analysis, customer insights, competitive intelligence</li>
+                    <li><strong style="color: #3b82f6;">Technology Solutions:</strong> Digital transformation, IT strategy, automation</li>
+                    <li><strong style="color: #3b82f6;">Management:</strong> Organizational structure, process optimization, team management</li>
+                </ul>
+
+                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">4. Web Search & Research</h3>
+                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
+                    Once domains are identified, specialized Web Search Agents automatically search the internet for:
+                </p>
+                <ul style="line-height: 2; font-size: 1.1rem; color: #d1d5db; margin-left: 20px; margin-bottom: 20px;">
+                    <li>Industry best practices and case studies</li>
+                    <li>Successful solutions implemented by similar companies</li>
+                    <li>Latest trends and innovations in relevant domains</li>
+                    <li>Tools, technologies, and methodologies applicable to your challenge</li>
+                </ul>
+
+                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">5. Solution Generation</h3>
+                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
+                    Our AI synthesizes all gathered information—your conversation, problem analysis, domain classification, and web research—to generate a comprehensive solution report. This report includes:
+                </p>
+                <ul style="line-height: 2; font-size: 1.1rem; color: #d1d5db; margin-left: 20px; margin-bottom: 20px;">
+                    <li>Executive Summary with key recommendations</li>
+                    <li>Detailed solution breakdown with implementation phases</li>
+                    <li>Step-by-step implementation roadmap</li>
+                    <li>Risk mitigation strategies</li>
+                    <li>Expected results and ROI analysis</li>
+                </ul>
+
+                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">What Makes Us Different</h3>
+                <div style="background: rgba(59, 130, 246, 0.1); padding: 25px; border-radius: 10px; margin-top: 20px;">
+                    <ul style="line-height: 2; font-size: 1.1rem; color: #d1d5db; margin-left: 20px;">
+                        <li><strong style="color: #3b82f6;">Multi-Agent Architecture:</strong> Unlike single-AI systems, we use specialized agents that collaborate, ensuring comprehensive coverage of all aspects of your challenge.</li>
+                        <li><strong style="color: #3b82f6;">Real-World Research Integration:</strong> Our solutions are grounded in actual case studies and industry practices, not just theoretical knowledge.</li>
+                        <li><strong style="color: #3b82f6;">Automated Workflow:</strong> The entire process from conversation to solution is automated, ensuring consistency and speed while maintaining quality.</li>
+                        <li><strong style="color: #3b82f6;">Personalized Context:</strong> Every solution is tailored to your specific company, industry, and challenges, not generic templates.</li>
+                        <li><strong style="color: #3b82f6;">Transparent Process:</strong> You can see each stage of the workflow as it progresses, understanding how your solution is being developed.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Section -->
+        <section id="chat-section" class="section">
+            <div class="page-header">
+                <h1>Meta Consult Chatbot</h1>
+                <p>Ask questions about your business challenges</p>
+            </div>
+
+            <div class="card glass-strong">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="font-size: 1.8rem; color: #3b82f6;">Conversation</h2>
+                    <div style="font-size: 0.875rem; color: #9ca3af;">
+                        <span id="conversation-stage">Questioning Phase</span>
+                    </div>
+                </div>
+                
+                <div id="chat-box" class="chat-box glass" style="padding: 20px; margin-bottom: 20px;">
+                    <div class="chat-message bot mb-4 flex">
+                        <div style="background: rgba(59, 130, 246, 0.2); color: white; padding: 15px; border-radius: 10px; max-width: 80%;">
+                            <p>Welcome to Meta Consult! How can I assist your business today?</p>
+                            <span style="font-size: 0.75rem; color: #9ca3af; margin-top: 8px; display: block;">
+                                <script>document.write(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))</script>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr auto auto auto; gap: 10px; align-items: center;">
+                    <input id="chat-input" type="text" placeholder="Type your message..." style="grid-column: 1; background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(59, 130, 246, 0.3); border-radius: 10px; padding: 12px; color: white; outline: none;" />
+                    <label for="file-input" style="grid-column: 2; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 10px;">
+                        <img src="/static/icon.png" alt="Upload File" style="width: 32px; height: 32px; opacity: 0.8; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'" />
+                    </label>
+                    <input id="file-input" type="file" accept=".txt,.csv,.xlsx,.xls,.pdf,.docx" style="display: none;" />
+                    <button id="send-btn" style="grid-column: 3; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; padding: 12px 25px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(59, 130, 246, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">Send</button>
+                </div>
+
+                <div id="loader" style="display: none; margin-top: 15px; text-align: center;">
+                    <div style="border: 4px solid rgba(59, 130, 246, 0.1); border-top: 4px solid #3b82f6; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                </div>
+                <p id="error-message" style="display: none; text-align: center; margin-top: 15px; color: #ef4444;"></p>
+                <p id="success-message" style="display: none; text-align: center; margin-top: 15px; color: #10b981;">Message sent!</p>
+            </div>
+        </section>
+
+        <!-- Solution Section -->
+        <section id="solution-section" class="section">
+            <div class="page-header">
+                <h1>Solution Report</h1>
+                <p>Access your generated solution documents</p>
+            </div>
+
+            <div id="solution-content">
+                <div style="text-align: center; padding: 40px;">
+                    <div class="spinner" style="border: 4px solid rgba(59, 130, 246, 0.1); border-top: 4px solid #3b82f6; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                    <p style="margin-top: 20px; color: #9ca3af;">Checking for solution...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact-section" class="section">
+            <div class="page-header">
+                <h1>Contact Us</h1>
+                <p>Get in touch with our team</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                <div class="card glass-strong contact-card">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">📧</div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #3b82f6;">Email Us</h3>
+                    <p style="color: #9ca3af; margin-bottom: 10px;">For inquiries and support:</p>
+                    <a href="mailto:i221932@nu.edu.pk" class="contact-email" style="text-decoration: none;">i221932@nu.edu.pk</a>
+                </div>
+
+                <div class="card glass-strong contact-card">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">📧</div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #3b82f6;">Email Us</h3>
+                    <p style="color: #9ca3af; margin-bottom: 10px;">For inquiries and support:</p>
+                    <a href="mailto:i221975@nu.edu.pk" class="contact-email" style="text-decoration: none;">i221975@nu.edu.pk</a>
+                </div>
+            </div>
+
+            <div class="card glass-strong" style="margin-top: 30px; text-align: center; padding: 30px;">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: #d1d5db;">
+                    We're here to help! Whether you have questions about Meta Consult, need assistance with your account, or want to learn more about our AI-powered consultancy services, don't hesitate to reach out. Our team is committed to providing excellent support and ensuring you get the most out of our platform.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Section Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId + '-section').classList.add('active');
+
+            // Add active class to clicked nav item
+            event.target.closest('.nav-item').classList.add('active');
+
+            // Load section-specific data
+            if (sectionId === 'dashboard') {
+                loadDashboard();
+            } else if (sectionId === 'solution') {
+                loadSolution();
+            }
+        }
+
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            localStorage.removeItem('access_token');
+            window.location.href = 'login.html';
+        });
+
+        // Load Dashboard Data
+        async function loadDashboard() {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:8000/user-profile', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 401) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const userData = await response.json();
+                displayDashboard(userData);
+            } catch (error) {
+                document.getElementById('dashboard-content').innerHTML = `
+                    <div class="card glass-strong" style="text-align: center; padding: 40px;">
+                        <p style="color: #ef4444;">Error loading dashboard data. Please try again.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Display Dashboard
+        function displayDashboard(userData) {
+            const dashboardHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <div class="card glass-strong kpi-card">
+                        <div class="kpi-label">Company Name</div>
+                        <div class="kpi-value" style="font-size: 1.5rem;">${userData.company_name || 'N/A'}</div>
+                    </div>
+                    <div class="card glass-strong kpi-card">
+                        <div class="kpi-label">Industry</div>
+                        <div class="kpi-value" style="font-size: 1.5rem;">${userData.industry || 'N/A'}</div>
+                    </div>
+                    <div class="card glass-strong kpi-card">
+                        <div class="kpi-label">Company Size</div>
+                        <div class="kpi-value" style="font-size: 1.5rem;">${userData.company_size || 'N/A'}</div>
+                    </div>
+                    <div class="card glass-strong kpi-card">
+                        <div class="kpi-label">Revenue</div>
+                        <div class="kpi-value" style="font-size: 1.5rem;">${userData.revenue || 'N/A'}</div>
+                    </div>
+                </div>
+
+                <div class="card glass-strong">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 20px; color: #3b82f6;">Company Information</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                        <div>
+                            <p style="color: #9ca3af; margin-bottom: 5px;">Full Name</p>
+                            <p style="font-size: 1.2rem; color: #ffffff;">${userData.full_name || 'N/A'}</p>
+                        </div>
+                        <div>
+                            <p style="color: #9ca3af; margin-bottom: 5px;">Role</p>
+                            <p style="font-size: 1.2rem; color: #ffffff;">${userData.role || 'N/A'}</p>
+                        </div>
+                        <div>
+                            <p style="color: #9ca3af; margin-bottom: 5px;">Country</p>
+                            <p style="font-size: 1.2rem; color: #ffffff;">${userData.country || 'N/A'}</p>
+                        </div>
+                        <div>
+                            <p style="color: #9ca3af; margin-bottom: 5px;">Email</p>
+                            <p style="font-size: 1.2rem; color: #ffffff;">${userData.email || 'N/A'}</p>
+                        </div>
+                    </div>
+                    ${userData.challenge ? `
+                        <div style="margin-top: 25px; padding-top: 25px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                            <p style="color: #9ca3af; margin-bottom: 10px;">Business Challenge</p>
+                            <p style="font-size: 1.1rem; line-height: 1.6; color: #d1d5db;">${userData.challenge}</p>
+                        </div>
+                    ` : ''}
+                </div>
+
+                <div class="card glass-strong">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 20px; color: #3b82f6;">Company Size Distribution</h3>
+                    <div class="chart-container">
+                        <canvas id="sizeChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card glass-strong">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 20px; color: #3b82f6;">Revenue Range Analysis</h3>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card glass-strong">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 20px; color: #3b82f6;">Account Timeline</h3>
+                    <div style="padding: 20px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: bold;">1</div>
+                            <div>
+                                <p style="font-weight: 600; color: #ffffff; margin-bottom: 5px;">Account Created</p>
+                                <p style="color: #9ca3af; font-size: 0.9rem;">${new Date(userData.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: bold; color: #3b82f6;">2</div>
+                            <div>
+                                <p style="font-weight: 600; color: #ffffff; margin-bottom: 5px;">Profile Completed</p>
+                                <p style="color: #9ca3af; font-size: 0.9rem;">All information provided</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: rgba(59, 130, 246, 0.3); display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: bold; color: #3b82f6;">3</div>
+                            <div>
+                                <p style="font-weight: 600; color: #ffffff; margin-bottom: 5px;">Ready for Consultation</p>
+                                <p style="color: #9ca3af; font-size: 0.9rem;">Start chatting to get solutions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('dashboard-content').innerHTML = dashboardHTML;
+
+            // Company Size Chart
+            const sizeCtx = document.getElementById('sizeChart');
+            if (sizeCtx) {
+                const sizeLabels = {
+                    '1-10': '1-10',
+                    '11-50': '11-50',
+                    '51-200': '51-200',
+                    '201-500': '201-500',
+                    '501-1000': '501-1000',
+                    '1000+': '1000+'
+                };
+                const userSize = userData.company_size || 'Unknown';
+                const sizeData = {};
+                sizeData[userSize] = 100;
+                
+                new Chart(sizeCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: [userSize],
+                        datasets: [{
+                            label: 'Your Company Size',
+                            data: [100],
+                            backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                            borderColor: '#3b82f6',
+                            borderWidth: 2,
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    color: '#9ca3af',
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#9ca3af'
+                                },
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart');
+            if (revenueCtx) {
+                const revenueLabels = {
+                    'Under $100K': 'Under $100K',
+                    '$100K-$500K': '$100K-$500K',
+                    '$500K-$1M': '$500K-$1M',
+                    '$1M-$5M': '$1M-$5M',
+                    '$5M-$10M': '$5M-$10M',
+                    'Over $10M': 'Over $10M'
+                };
+                const userRevenue = userData.revenue || 'Not Specified';
+                
+                new Chart(revenueCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                        datasets: [{
+                            label: 'Revenue Trend (Projected)',
+                            data: [75, 80, 85, 90],
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 5,
+                            pointBackgroundColor: '#3b82f6',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#d1d5db'
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                titleColor: '#ffffff',
+                                bodyColor: '#d1d5db',
+                                borderColor: '#3b82f6',
+                                borderWidth: 1
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    color: '#9ca3af',
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#9ca3af'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Load Solution Status
+        async function loadSolution() {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:8000/solution-status?t=${Date.now()}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 401) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const solutionData = await response.json();
+                console.log('Solution status:', solutionData);
+                displaySolution(solutionData);
+            } catch (error) {
+                document.getElementById('solution-content').innerHTML = `
+                    <div class="card glass-strong" style="text-align: center; padding: 40px;">
+                        <p style="color: #ef4444;">Error checking solution status. Please try again.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Display Solution
+        function displaySolution(solutionData) {
+            if (solutionData.exists) {
+                document.getElementById('solution-content').innerHTML = `
+                    <div class="card glass-strong" style="text-align: center; padding: 40px;">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">✅</div>
+                        <h2 style="font-size: 2rem; margin-bottom: 15px; color: #3b82f6;">Solution Generated!</h2>
+                        <p style="font-size: 1.2rem; color: #d1d5db; margin-bottom: 30px;">
+                            Your solution PDF has been generated and is ready for download.
+                        </p>
+                        <p style="color: #9ca3af; margin-bottom: 8px;">Account: ${solutionData.account_email || 'N/A'}</p>
+                        <p style="color: #9ca3af; margin-bottom: 30px;">Filename: ${solutionData.filename}</p>
+                        <button onclick="downloadSolution()" class="btn-primary" style="font-size: 1.1rem; padding: 15px 40px;">
+                            Download Solution PDF
+                        </button>
+                    </div>
+                `;
+            } else {
+                document.getElementById('solution-content').innerHTML = `
+                    <div class="card glass-strong" style="text-align: center; padding: 40px;">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">📄</div>
+                        <h2 style="font-size: 2rem; margin-bottom: 15px; color: #9ca3af;">No Solution Generated</h2>
+                        <p style="font-size: 1.2rem; color: #d1d5db; margin-bottom: 30px;">
+                            You haven't generated a solution yet. Start a chat to begin the process!
+                        </p>
+                        <button onclick="showSection('chat')" class="btn-primary" style="font-size: 1.1rem; padding: 15px 40px;">
+                            Go to Chat →
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Download Solution PDF
+        async function downloadSolution() {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                alert('Session expired. Please log in again.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:8000/download-solution?t=${Date.now()}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    cache: 'no-store'
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        alert('Session expired. Please log in again.');
+                        window.location.href = 'login.html';
+                    } else if (response.status === 404) {
+                        alert('Solution PDF not found. Please generate a solution first.');
+                    } else {
+                        alert('Error downloading PDF. Please try again.');
+                    }
+                    return;
+                }
+
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                const downloadLink = document.createElement('a');
+                downloadLink.href = blobUrl;
+                downloadLink.download = 'solution.pdf';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(downloadLink);
+            } catch (error) {
+                console.error('Error downloading PDF:', error);
+                alert('Error downloading PDF: ' + error.message);
+            }
+        }
+
+        // Chat functionality (from original main_page.html)
+        const chatBox = document.getElementById('chat-box');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const loader = document.getElementById('loader');
+        const errorMessage = document.getElementById('error-message');
+        const successMessage = document.getElementById('success-message');
+
+        async function refreshToken() {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                errorMessage.textContent = 'Please log in again.';
+                errorMessage.style.display = 'block';
+                setTimeout(() => window.location.href = 'login.html', 2000);
+                return null;
+            }
+            try {
+                const response = await fetch('http://localhost:8000/refresh-token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('access_token', data.access_token);
+                    return data.access_token;
+                } else {
+                    throw new Error('Failed to refresh token');
+                }
+            } catch (error) {
+                console.error('Token refresh error:', error.message);
+                return null;
+            }
+        }
+
+        sendBtn.addEventListener('click', async () => {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            sendBtn.disabled = true;
+            loader.style.display = 'block';
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            const userMessage = document.createElement('div');
+            userMessage.className = 'chat-message user mb-4 flex';
+            userMessage.style.justifyContent = 'flex-end';
+            userMessage.innerHTML = `
+                <div style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; padding: 15px; border-radius: 10px; max-width: 80%;">
+                    <p>${message}</p>
+                    <span style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.7); margin-top: 8px; display: block;">
+                        ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                </div>
+            `;
+            chatBox.appendChild(userMessage);
+            chatInput.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            let token = localStorage.getItem('access_token');
+            if (!token) {
+                errorMessage.textContent = 'Please log in again.';
+                errorMessage.style.display = 'block';
+                setTimeout(() => window.location.href = 'login.html', 2000);
+                sendBtn.disabled = false;
+                loader.style.display = 'none';
+                return;
+            }
+
+            try {
+                const fileEl = document.getElementById('file-input');
+                const file = fileEl && fileEl.files && fileEl.files[0];
+                let response;
+                if (file) {
+                    if (!message) {
+                        errorMessage.textContent = 'Please enter a message to accompany the file.';
+                        errorMessage.style.display = 'block';
+                        sendBtn.disabled = false;
+                        loader.style.display = 'none';
+                        return;
+                    }
+                    const form = new FormData();
+                    form.append('message', message);
+                    form.append('file', file);
+                    response = await fetch('http://localhost:8000/chat-with-file', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: form
+                    });
+                } else {
+                    response = await fetch('http://localhost:8000/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ message })
+                    });
+                }
+
+                if (response.status === 401) {
+                    token = await refreshToken();
+                    if (!token) {
+                        errorMessage.textContent = 'Session expired. Please log in again.';
+                        errorMessage.style.display = 'block';
+                        setTimeout(() => window.location.href = 'login.html', 2000);
+                        sendBtn.disabled = false;
+                        loader.style.display = 'none';
+                        return;
+                    }
+                    response = await fetch('http://localhost:8000/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ message })
+                    });
+                }
+
+                const contentType = response.headers.get('content-type');
+                const contentDisposition = response.headers.get('content-disposition');
+                
+                if (contentType && contentType.includes('application/pdf') && response.ok) {
+                    const blob = await response.blob();
+                    const filename = contentDisposition 
+                        ? contentDisposition.split('filename=')[1].replace(/"/g, '')
+                        : 'solution.pdf';
+                    
+                    const downloadUrl = window.URL.createObjectURL(blob);
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = downloadUrl;
+                    downloadLink.download = filename;
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    window.URL.revokeObjectURL(downloadUrl);
+                    document.body.removeChild(downloadLink);
+                    
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'chat-message bot mb-4 flex';
+                    botMessage.innerHTML = `
+                        <div style="background: rgba(59, 130, 246, 0.2); color: white; padding: 15px; border-radius: 10px; max-width: 80%;">
+                            <p>✅ Your solution PDF has been downloaded: <strong>${filename}</strong></p>
+                            <span style="font-size: 0.75rem; color: #9ca3af; margin-top: 8px; display: block;">
+                                ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                        </div>
+                    `;
+                    chatBox.appendChild(botMessage);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                    successMessage.style.display = 'block';
+                    
+                    sendBtn.disabled = false;
+                    loader.style.display = 'none';
+                    return;
+                }
+                
+                const data = await response.json();
+
+                if (response.ok) {
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'chat-message bot mb-4 flex';
+                    botMessage.innerHTML = `
+                        <div style="background: rgba(59, 130, 246, 0.2); color: white; padding: 15px; border-radius: 10px; max-width: 80%;">
+                            ${data.response_html || data.response}
+                            <span style="font-size: 0.75rem; color: #9ca3af; margin-top: 8px; display: block;">
+                                ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                        </div>
+                    `;
+                    chatBox.appendChild(botMessage);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                    
+                    if (data.auto_web_search === true) {
+                        startWorkflowPolling();
+                    }
+                    
+                    successMessage.style.display = 'block';
+                    updateConversationStage(data.response_html || data.response);
+                } else {
+                    errorMessage.textContent = data.detail || 'Error occurred. Please try again.';
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Chat error:', error.message);
+                errorMessage.textContent = `Network error: ${error.message}. Check console for details.`;
+                errorMessage.style.display = 'block';
+            } finally {
+                sendBtn.disabled = false;
+                loader.style.display = 'none';
+            }
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendBtn.click();
+            }
+        });
+
+        function updateConversationStage(response) {
+            const stageElement = document.getElementById('conversation-stage');
+            if (response.includes("Would you like Meta Consult to create")) {
+                stageElement.textContent = "Ready for Proposal";
+                stageElement.style.color = "#3b82f6";
+            } else if (response.includes("Proposal Generated Successfully")) {
+                stageElement.textContent = "Ready for Analysis";
+                stageElement.style.color = "#3b82f6";
+            } else if (response.includes("Proposal Analysis Complete")) {
+                stageElement.textContent = "Domain Analysis";
+                stageElement.style.color = "#3b82f6";
+            } else if (response.includes("Market Research") || response.includes("Strategic Planning") || 
+                      response.includes("Management") || response.includes("Technology")) {
+                stageElement.textContent = "Solution Planning";
+                stageElement.style.color = "#3b82f6";
+            } else {
+                stageElement.textContent = "Questioning Phase";
+                stageElement.style.color = "#fbbf24";
+            }
+        }
+
+        // Function to open/download solution PDF from chat
+        async function openSolutionPDF() {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                alert('Session expired. Please log in again.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:8000/download-solution?t=${Date.now()}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    cache: 'no-store'
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        alert('Session expired. Please log in again.');
+                        window.location.href = 'login.html';
+                    } else if (response.status === 404) {
+                        alert('Solution PDF not found. Please generate a solution first.');
+                    } else {
+                        alert('Error downloading PDF. Please try again.');
+                    }
+                    return;
+                }
+
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                const downloadLink = document.createElement('a');
+                downloadLink.href = blobUrl;
+                downloadLink.download = 'solution.pdf';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(downloadLink);
+                
+                // Show success message in chat
+                const successMessage = document.createElement('div');
+                successMessage.className = 'chat-message bot mb-4 flex';
+                successMessage.innerHTML = `
+                    <div style="background: rgba(59, 130, 246, 0.2); color: white; padding: 15px; border-radius: 10px; max-width: 80%;">
+                        <p>✅ Solution PDF downloaded successfully!</p>
+                        <span style="font-size: 0.75rem; color: #9ca3af; margin-top: 8px; display: block;">
+                            ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                    </div>
+                `;
+                chatBox.appendChild(successMessage);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } catch (error) {
+                console.error('Error downloading PDF:', error);
+                alert('Error downloading PDF: ' + error.message);
+            }
+        }
+
+        // Workflow polling for status updates
+        let workflowPolling = null;
+        let lastWorkflowHtml = null;
+
+        function startWorkflowPolling() {
+            if (workflowPolling) return;
+            const token = localStorage.getItem('access_token');
+            if (!token) return;
+            workflowPolling = setInterval(async () => {
+                try {
+                    const resp = await fetch('http://localhost:8000/workflow-status', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (!resp.ok) return;
+                    const data = await resp.json();
+                    if (data.last_html && data.last_html !== lastWorkflowHtml) {
+                        const webSearchMessage = document.createElement('div');
+                        webSearchMessage.className = 'chat-message bot mb-4 flex';
+                        webSearchMessage.innerHTML = `
+                            <div style="background: rgba(59, 130, 246, 0.2); color: white; padding: 15px; border-radius: 10px; max-width: 80%;">
+                                ${data.last_html}
+                                <span style="font-size: 0.75rem; color: #9ca3af; margin-top: 8px; display: block;">
+                                    ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                            </div>
+                        `;
+                        chatBox.appendChild(webSearchMessage);
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                        lastWorkflowHtml = data.last_html;
+                    }
+                    if (data.final_html && data.solution_ready) {
+                        const finalMessage = document.createElement('div');
+                        finalMessage.className = 'chat-message bot mb-4 flex';
+                        finalMessage.innerHTML = `
+                            <div style="background: rgba(59, 130, 246, 0.2); color: white; padding: 15px; border-radius: 10px; max-width: 80%;">
+                                ${data.final_html}
+                                <span style="font-size: 0.75rem; color: #9ca3af; margin-top: 8px; display: block;">
+                                    ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                            </div>
+                        `;
+                        chatBox.appendChild(finalMessage);
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                        stopWorkflowPolling();
+                    }
+                } catch (err) {
+                    console.error('Workflow poll error', err);
+                }
+            }, 2000);
+        }
+
+        function stopWorkflowPolling() {
+            if (workflowPolling) {
+                clearInterval(workflowPolling);
+                workflowPolling = null;
+            }
+        }
+
+        // Add spin animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
