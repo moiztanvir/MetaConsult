@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 import logging
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.memory import ConversationBufferWindowMemory
+from langchain_community.memory import ConversationBufferWindowMemory
 from proposal_agent import ProposalAgent
 from planner_agent import PlannerAgent
 from agent_workflow import MultiAgentWorkflow
