@@ -5,6 +5,7 @@ passlib[bcrypt]
 supabase
 python-dotenv
 langchain
+langchain-community
 langchain-google-genai
 langchain-core
 langgraph
