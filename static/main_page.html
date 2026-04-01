@@ -560,7 +560,7 @@
             }
 
             try {
-                const response = await fetch('http://localhost:8000/user-profile', {
+                const response = await fetch('/user-profile', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -824,7 +824,7 @@
             }
 
             try {
-                const response = await fetch(`http://localhost:8000/solution-status?t=${Date.now()}`, {
+                const response = await fetch(`/solution-status?t=${Date.now()}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -890,7 +890,7 @@
             }
 
             try {
-                const response = await fetch(`http://localhost:8000/download-solution?t=${Date.now()}`, {
+                const response = await fetch(`/download-solution?t=${Date.now()}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     },
@@ -941,7 +941,7 @@
                 return null;
             }
             try {
-                const response = await fetch('http://localhost:8000/refresh-token', {
+                const response = await fetch('/refresh-token', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1010,7 +1010,7 @@
                     const form = new FormData();
                     form.append('message', message);
                     form.append('file', file);
-                    response = await fetch('http://localhost:8000/chat-with-file', {
+                    response = await fetch('/chat-with-file', {
                         method: 'POST',
                         headers: {
                             'Authorization': `Bearer ${token}`
@@ -1018,7 +1018,7 @@
                         body: form
                     });
                 } else {
-                    response = await fetch('http://localhost:8000/chat', {
+                    response = await fetch('/chat', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -1038,7 +1038,7 @@
                         loader.style.display = 'none';
                         return;
                     }
-                    response = await fetch('http://localhost:8000/chat', {
+                    response = await fetch('/chat', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -1158,7 +1158,7 @@
             }
 
             try {
-                const response = await fetch(`http://localhost:8000/download-solution?t=${Date.now()}`, {
+                const response = await fetch(`/download-solution?t=${Date.now()}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -1217,7 +1217,7 @@
             if (!token) return;
             workflowPolling = setInterval(async () => {
                 try {
-                    const resp = await fetch('http://localhost:8000/workflow-status', {
+                    const resp = await fetch('/workflow-status', {
                         headers: { 'Authorization': `Bearer ${token}` }
                     });
                     if (!resp.ok) return;
