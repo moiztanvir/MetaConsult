@@ -287,7 +287,7 @@
             try {
                 console.log('Sending signup request with data:', JSON.stringify(formData, null, 2));
                 console.log('Request headers:', { 'Content-Type': 'application/json' });
-                const response = await fetch('http://localhost:8000/signup', {
+                const response = await fetch('/signup', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
