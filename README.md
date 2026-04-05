@@ -51,7 +51,7 @@ To democratize access to high-quality business consultancy by combining the powe
 
 ## Live Demo
 
-> 🌐 **[https://f25-236-r-meta-consult-final-ii.vercel.app](https://f25-236-r-metaconsult-final-ii.onrender.com)**
+> 🌐 **[https://f25-236-r-meta-consult-final-ii.onrender.com](https://f25-236-r-metaconsult-final-ii.onrender.com)**
 
 ---
 
