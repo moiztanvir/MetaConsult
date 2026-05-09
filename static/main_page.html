@@ -262,25 +262,25 @@
         <div class="sidebar-logo">Meta Consult</div>
         <nav>
             <a class="nav-item active" onclick="showSection('home')">
-                <i>🏠</i> <span>Home</span>
+                <span>Home</span>
             </a>
             <a class="nav-item" onclick="showSection('dashboard')">
-                <i>📊</i> <span>Dashboard</span>
+                <span>Dashboard</span>
             </a>
             <a class="nav-item" onclick="showSection('docs')">
-                <i>📚</i> <span>Docs</span>
+                <span>Docs</span>
             </a>
             <a class="nav-item" onclick="showSection('chat')">
-                <i>💬</i> <span>Chat</span>
+                <span>Chat</span>
             </a>
             <a class="nav-item" onclick="showSection('solution')">
-                <i>📄</i> <span>Solution</span>
+                <span>Solution</span>
             </a>
             <a class="nav-item" onclick="showSection('contact')">
-                <i>📧</i> <span>Contact</span>
+                <span>Contact</span>
             </a>
             <button class="nav-item" id="logout-btn" style="width: 100%; border: none; background: none; text-align: left;">
-                <i>🚪</i> <span>Logout</span>
+                <span>Logout</span>
             </button>
         </nav>
     </div>
@@ -852,7 +852,6 @@
             if (solutionData.exists) {
                 document.getElementById('solution-content').innerHTML = `
                     <div class="card glass-strong" style="text-align: center; padding: 40px;">
-                        <div style="font-size: 4rem; margin-bottom: 20px;">✅</div>
                         <h2 style="font-size: 2rem; margin-bottom: 15px; color: #3b82f6;">Solution Generated!</h2>
                         <p style="font-size: 1.2rem; color: #d1d5db; margin-bottom: 30px;">
                             Your solution PDF has been generated and is ready for download.
@@ -867,7 +866,6 @@
             } else {
                 document.getElementById('solution-content').innerHTML = `
                     <div class="card glass-strong" style="text-align: center; padding: 40px;">
-                        <div style="font-size: 4rem; margin-bottom: 20px;">📄</div>
                         <h2 style="font-size: 2rem; margin-bottom: 15px; color: #9ca3af;">No Solution Generated</h2>
                         <p style="font-size: 1.2rem; color: #d1d5db; margin-bottom: 30px;">
                             You haven't generated a solution yet. Start a chat to begin the process!
