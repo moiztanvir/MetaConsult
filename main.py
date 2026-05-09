@@ -545,7 +545,7 @@ async def chat(request: ChatRequest, current_user: dict = Depends(get_current_us
                 )
             logger.warning("No solution PDF found for user download request")
             error_response = """
-            <h3>❌ Solution PDF Not Found</h3>
+            <h3>Solution PDF Not Found</h3>
             <p>Sorry, the solution PDF could not be found. Please try generating the solution again.</p>
             """
             return {"response": error_response, "response_html": error_response}
@@ -641,7 +641,7 @@ async def generate_proposal(current_user: dict):
         
         # Show proposal generation success
         response_html = """
-        <h3>✅ Proposal Generated Successfully!</h3>
+        <h3>Proposal Generated Successfully!</h3>
         <p>Your detailed business proposal has been created and saved.</p>
         <br>
         """
@@ -654,7 +654,7 @@ async def generate_proposal(current_user: dict):
         # Automatically trigger analysis and web search in background without asking the user
         logger.info("Scheduling background analysis and web search task...")
         status_message = """
-        <h3>⚙️ Planner Agent is working...</h3>
+        <h3>Planner Agent is working...</h3>
         <p>Analyzing your proposal and identifying strategic domains...</p>
         """
         memory.save_context(
@@ -700,7 +700,7 @@ async def generate_proposal(current_user: dict):
                 # move to web search stage
                 proposal_agent.store_gathered_info("workflow_stage", "web_searching")
                 web_search_status = """
-                <h3>🔍 Web Search Agents are working...</h3>
+                <h3>Web Search Agents are working...</h3>
                 <p>Searching the web for solutions across identified domains...</p>
                 """
                 proposal_agent.store_gathered_info("workflow_last_html", web_search_status)
@@ -739,7 +739,7 @@ async def generate_proposal(current_user: dict):
     except Exception as e:
         logger.error(f"Proposal generation error: {str(e)}")
         error_html = f"""
-        <h3>❌ Proposal Generation Failed</h3>
+        <h3>Proposal Generation Failed</h3>
         <p>Sorry, there was an error generating your proposal</p>
         <p>Error details: {str(e)}</p>
         """
@@ -884,7 +884,7 @@ async def analyze_proposal(current_user: dict):
         proposal_path = proposal_agent.gathered_info.get("proposal_path")
         if not proposal_path or not os.path.exists(proposal_path):
             error_html = """
-            <h3>❌ No Proposal Found</h3>
+            <h3>No Proposal Found</h3>
             <p>No proposal file found to analyze. Please generate a proposal first.</p>
             """
             return {"response": error_html, "response_html": error_html, "auto_web_search": False}
@@ -932,7 +932,7 @@ async def analyze_proposal(current_user: dict):
         # Return domain explanation and notify that web search has started
         domain_explanation = result["explanation"]
         response_html = f"""
-        <h3>🔍 Proposal Analysis Complete!</h3>
+        <h3>Proposal Analysis Complete!</h3>
         <p>Your business proposal has been analyzed using advanced reasoning.</p>
         <br>
         {domain_explanation}
@@ -949,7 +949,7 @@ async def analyze_proposal(current_user: dict):
     except Exception as e:
         logger.error(f"Proposal analysis error: {str(e)}", exc_info=True)
         error_html = f"""
-        <h3>❌ Analysis Failed</h3>
+        <h3>Analysis Failed</h3>
         <p>Sorry, there was an error analyzing your proposal: {str(e)}</p>
         <p>Please try again or contact support.</p>
         """
@@ -1197,12 +1197,12 @@ async def get_web_search_results(current_user: dict):
                 proposal_agent.store_gathered_info("solution_pdf_path", generated_solution_path)
                 
                 response_html = f"""
-                <h3>🌐 Web Search Results & Comprehensive Solution Report</h3>
+                <h3>Web Search Results & Comprehensive Solution Report</h3>
                 <p>I've searched the web for solutions related to your problem in the identified domain(s). Here are the top results:</p>
                 <br>
                 {web_search_results_html}
                 <br>
-                <h3>📄 Comprehensive Solution Report Generated</h3>
+                <h3>Comprehensive Solution Report Generated</h3>
                 <p>Based on the web search results and your specific problem, I've generated a comprehensive solution report with:</p>
                 <ul>
                     <li>Executive summary of the solution approach</li>
@@ -1236,7 +1236,7 @@ async def get_web_search_results(current_user: dict):
                 logger.error(f"Error generating solution PDF: {str(pdf_error)}", exc_info=True)
                 # Still return search results even if PDF generation fails
                 response_html = f"""
-                <h3>🌐 Web Search Results</h3>
+                <h3>Web Search Results</h3>
                 <p>I've searched the web for solutions related to your problem in the identified domain(s). Here are the top results:</p>
                 <br>
                 {web_search_results_html}
@@ -1325,7 +1325,7 @@ async def chat_with_file(
                 )
             logger.warning("No solution PDF found for user download request")
             error_response = """
-            <h3>❌ Solution PDF Not Found</h3>
+            <h3>Solution PDF Not Found</h3>
             <p>Sorry, the solution PDF could not be found. Please try generating the solution again.</p>
             """
             return {"response": error_response, "response_html": error_response}
