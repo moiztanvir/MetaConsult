@@ -4,238 +4,367 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meta Consult - Sign Up</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
         body {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            background: #1a1a1a;
             color: #ffffff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 1rem;
-        }
-        .signup-container {
-            background: #000000;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-            width: 100%;
-            max-width: 500px;
-            animation: slideIn 0.5s ease-in;
-        }
-        .signup-container h2 {
-            text-align: center;
-            color: #3b82f6;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
+            padding: 2rem 1rem;
             position: relative;
         }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at 30% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(37, 99, 235, 0.06) 0%, transparent 50%);
+        }
+
+        .signup-card {
+            position: relative;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 2.5rem;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 560px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .brand h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+
+        .brand h1 span { color: #ffffff; }
+
+        .brand p {
+            color: #6b7280;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+        }
+
+        .brand-bar {
+            width: 40px;
+            height: 3px;
+            background: #3b82f6;
+            border-radius: 2px;
+            margin: 0.8rem auto 0;
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #3b82f6;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .section-title:not(:first-of-type) {
+            margin-top: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: #d1d5db;
-            font-size: 0.9rem;
-            transition: all 0.3s;
+            margin-bottom: 0.4rem;
+            color: #9ca3af;
+            font-size: 0.85rem;
+            font-weight: 500;
         }
+
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 0.8rem;
-            border: none;
-            border-bottom: 2px solid #3b82f6;
-            background: #1a1a1a;
+            padding: 0.7rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
             color: #ffffff;
-            font-size: 1rem;
-            transition: border-color 0.3s;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            outline: none;
         }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .form-group input::placeholder {
+            color: #4b5563;
+        }
+
         .form-group select {
             appearance: none;
-            background: #1a1a1a url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white"><path d="M7 7l3 3 3-3m-6 6l3-3 3 3"/></svg>') no-repeat right 0.8rem center/12px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239ca3af' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
         }
+
         .form-group select option {
             background: #1a1a1a;
             color: #ffffff;
         }
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-bottom-color: #60a5fa;
-        }
-        .form-group input:focus + label,
-        .form-group input:not(:placeholder-shown) + label {
-            transform: translateY(-1.5rem);
-            font-size: 0.8rem;
-            color: #3b82f6;
-        }
+
         .form-group.checkbox {
             display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
+            align-items: flex-start;
+            gap: 0.6rem;
+            margin-top: 0.5rem;
         }
+
         .form-group.checkbox input {
             width: auto;
-            margin-right: 0.5rem;
+            margin-top: 0.2rem;
             accent-color: #3b82f6;
         }
+
         .form-group.checkbox label {
-            display: inline-flex;
-            align-items: center;
-            font-size: 0.9rem;
-            color: #d1d5db;
+            font-size: 0.85rem;
+            color: #9ca3af;
+            margin-bottom: 0;
         }
+
+        .form-group.checkbox a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .form-group.checkbox a:hover {
+            text-decoration: underline;
+        }
+
         .submit-btn {
             width: 100%;
             padding: 0.8rem;
-            background: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: #ffffff;
             border: none;
-            border-radius: 25px;
+            border-radius: 10px;
             font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-top: 1rem;
         }
+
         .submit-btn:hover {
-            background: #2563eb;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
         }
+
         .submit-btn:disabled {
-            background: #4b5563;
+            background: #374151;
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
-        .error, .success {
+
+        .message {
             text-align: center;
             margin-top: 1rem;
             font-size: 0.9rem;
             display: none;
         }
+
         .error { color: #ef4444; }
         .success { color: #22c55e; }
+
         .loader {
             display: none;
-            border: 4px solid #3b82f6;
-            border-top: 4px solid #ffffff;
-            border-radius: 50%;
             width: 24px;
             height: 24px;
-            animation: spin 1s linear infinite;
+            border: 3px solid rgba(59, 130, 246, 0.2);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
             margin: 1rem auto;
         }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .login-link a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
         @keyframes slideIn {
-            from { transform: translateY(50px); opacity: 0; }
+            from { transform: translateY(20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
-        @media (max-width: 768px) {
-            .signup-container { padding: 1.5rem; }
-            .signup-container h2 { font-size: 1.5rem; }
+
+        .signup-card {
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @media (max-width: 640px) {
+            .signup-card { padding: 1.8rem; }
+            .form-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="signup-container">
-        <h2>Sign Up for Meta Consult</h2>
+    <div class="signup-card">
+        <div class="brand">
+            <h1>Meta<span>Consult</span></h1>
+            <p>Create your account</p>
+            <div class="brand-bar"></div>
+        </div>
+
         <form id="signup-form">
-            <div class="form-group">
-                <input type="email" id="email" name="email" placeholder=" " required>
-                <label for="email">Email</label>
+            <div class="section-title">Account Information</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                </div>
+            </div>
+
+            <div class="section-title">Company Information</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="full_name">Full Name</label>
+                    <input type="text" id="full_name" name="full_name" placeholder="Your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="company_name">Company Name</label>
+                    <input type="text" id="company_name" name="company_name" placeholder="Company name" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="industry">Industry</label>
+                    <select id="industry" name="industry" required>
+                        <option value="">Select Industry</option>
+                        <option value="Retail">Retail</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Education">Education</option>
+                        <option value="Hospitality">Hospitality</option>
+                        <option value="Agriculture">Agriculture</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="company_size">Company Size</label>
+                    <select id="company_size" name="company_size">
+                        <option value="">Select Size</option>
+                        <option value="1-10">1-10 employees</option>
+                        <option value="11-50">11-50 employees</option>
+                        <option value="51-200">51-200 employees</option>
+                        <option value="201+">201+ employees</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section-title">Additional Details</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="revenue">Annual Revenue</label>
+                    <select id="revenue" name="revenue">
+                        <option value="">Select Revenue</option>
+                        <option value="<100K">&lt; $100K</option>
+                        <option value="100K-1M">$100K - $1M</option>
+                        <option value="1M-10M">$1M - $10M</option>
+                        <option value=">10M">&gt; $10M</option>
+                        <option value="prefer_not_to_say">Prefer not to say</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="role">Business Role</label>
+                    <select id="role" name="role">
+                        <option value="">Select Role</option>
+                        <option value="Owner">Owner/Founder</option>
+                        <option value="CEO">CEO/CTO/CFO</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Consultant">Consultant</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <select id="country" name="country">
+                        <option value="">Select Country</option>
+                        <option value="PK">Pakistan</option>
+                        <option value="US">United States</option>
+                        <option value="IN">India</option>
+                        <option value="GB">United Kingdom</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="challenge">Business Challenge</label>
+                    <select id="challenge" name="challenge">
+                        <option value="">Select Challenge</option>
+                        <option value="Increasing sales">Increasing sales/revenue</option>
+                        <option value="Reducing costs">Reducing costs</option>
+                        <option value="Supply chain">Supply chain optimization</option>
+                        <option value="Marketing">Marketing strategy</option>
+                        <option value="Employee retention">Employee retention</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
             </div>
             <div class="form-group">
-                <input type="password" id="password" name="password" placeholder=" " required>
-                <label for="password">Password</label>
-            </div>
-            <div class="form-group">
-                <input type="text" id="full_name" name="full_name" placeholder=" " required>
-                <label for="full_name">Full Name</label>
-            </div>
-            <div class="form-group">
-                <input type="text" id="company_name" name="company_name" placeholder=" " required>
-                <label for="company_name">Company Name</label>
-            </div>
-            <div class="form-group">
-                <select id="industry" name="industry" required>
-                    <option value="">Select Industry</option>
-                    <option value="Retail">Retail</option>
-                    <option value="Technology">Technology</option>
-                    <option value="Manufacturing">Manufacturing</option>
-                    <option value="Healthcare">Healthcare</option>
-                    <option value="Finance">Finance</option>
-                    <option value="Education">Education</option>
-                    <option value="Hospitality">Hospitality</option>
-                    <option value="Agriculture">Agriculture</option>
-                    <option value="Other">Other</option>
-                </select>
-                <label for="industry">Industry</label>
-            </div>
-            <div class="form-group">
-                <select id="company_size" name="company_size">
-                    <option value="">Select Size</option>
-                    <option value="1-10">1–10 employees</option>
-                    <option value="11-50">11–50 employees</option>
-                    <option value="51-200">51–200 employees</option>
-                    <option value="201+">201+ employees</option>
-                </select>
-                <label for="company_size">Company Size (Optional)</label>
-            </div>
-            <div class="form-group">
-                <select id="revenue" name="revenue">
-                    <option value="">Select Revenue</option>
-                    <option value="<100K">&lt; $100K</option>
-                    <option value="100K-1M">$100K–$1M</option>
-                    <option value="1M-10M">$1M–$10M</option>
-                    <option value=">10M">&gt; $10M</option>
-                    <option value="prefer_not_to_say">Prefer not to say</option>
-                </select>
-                <label for="revenue">Annual Revenue (Optional)</label>
-            </div>
-            <div class="form-group">
-                <select id="role" name="role">
-                    <option value="">Select Role</option>
-                    <option value="Owner">Owner/Founder</option>
-                    <option value="CEO">CEO/CTO/CFO</option>
-                    <option value="Manager">Manager</option>
-                    <option value="Consultant">Consultant</option>
-                    <option value="Other">Other</option>
-                </select>
-                <label for="role">Business Role (Optional)</label>
-            </div>
-            <div class="form-group">
-                <select id="country" name="country">
-                    <option value="">Select Country</option>
-                    <option value="PK">Pakistan</option>
-                    <option value="US">United States</option>
-                    <option value="IN">India</option>
-                    <option value="GB">United Kingdom</option>
-                    <option value="Other">Other</option>
-                </select>
-                <label for="country">Country (Optional)</label>
-            </div>
-            <div class="form-group">
-                <select id="challenge" name="challenge">
-                    <option value="">Select Challenge</option>
-                    <option value="Increasing sales">Increasing sales/revenue</option>
-                    <option value="Reducing costs">Reducing costs</option>
-                    <option value="Supply chain">Supply chain optimization</option>
-                    <option value="Marketing">Marketing strategy</option>
-                    <option value="Employee retention">Employee retention</option>
-                    <option value="Other">Other</option>
-                </select>
-                <label for="challenge">Primary Business Challenge (Optional)</label>
-            </div>
-            <div class="form-group">
+                <label for="referral">How did you hear about us?</label>
                 <select id="referral" name="referral">
                     <option value="">Select Source</option>
                     <option value="Social media">Social media</option>
@@ -244,19 +373,26 @@
                     <option value="Event">Industry event</option>
                     <option value="Other">Other</option>
                 </select>
-                <label for="referral">How did you hear about us? (Optional)</label>
             </div>
+
             <div class="form-group checkbox">
                 <input type="checkbox" id="terms" name="terms" required>
-                <label for="terms">I agree to the <a href="/terms" target="_blank" style="color: #3b82f6;">Terms and Conditions</a></label>
+                <label for="terms">I agree to the <a href="/terms" target="_blank">Terms and Conditions</a></label>
             </div>
-            <button type="submit" class="submit-btn" id="submit-btn">Sign Up</button>
+
+            <button type="submit" class="submit-btn" id="submit-btn">Create Account</button>
             <div class="loader" id="loader"></div>
-            <p class="error" id="error-message">Error occurred. Please try again.</p>
-            <p class="success" id="success-message">Account created! Check your email for verification.</p>
+            <p class="message error" id="error-message">Error occurred. Please try again.</p>
+            <p class="message success" id="success-message">Account created! Check your email for verification.</p>
         </form>
+
+        <div class="login-link">
+            Already have an account? <a href="http://localhost:8000/login">Sign In</a>
+        </div>
     </div>
+
     <script>
+        const BASE_URL = 'http://localhost:8000';
         document.getElementById('signup-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const submitBtn = document.getElementById('submit-btn');
@@ -285,20 +421,13 @@
             };
 
             try {
-                console.log('Sending signup request with data:', JSON.stringify(formData, null, 2));
-                console.log('Request headers:', { 'Content-Type': 'application/json' });
-                const response = await fetch('/signup', {
+                const response = await fetch(BASE_URL + '/signup', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
-                console.log('Response status:', response.status, response.statusText);
-                console.log('Response headers:', [...response.headers.entries()]);
 
                 const data = await response.json();
-                console.log('Response data:', data);
 
                 if (response.ok) {
                     successMessage.textContent = data.message || 'Account created! Check your email for verification.';
@@ -317,9 +446,7 @@
                     successMessage.style.display = 'none';
                 }
             } catch (error) {
-                console.error('Signup error:', error.message, error.stack);
-                console.error('Possible CORS error. Check Network tab for blocked requests.');
-                errorMessage.textContent = `Network error: ${error.message}. Check console for details.`;
+                errorMessage.textContent = 'Network error. Please check your connection.';
                 errorMessage.style.display = 'block';
                 successMessage.style.display = 'none';
             } finally {

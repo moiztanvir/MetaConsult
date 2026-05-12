@@ -16,26 +16,38 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            background: #1a1a1a;
             color: #ffffff;
             overflow-x: hidden;
         }
 
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(37, 99, 235, 0.04) 0%, transparent 50%);
+        }
+
         /* Glassy effect (glassmorphism) */
         .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .glass-strong {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.5);
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
         }
 
         /* Sidebar Navigation */
@@ -51,38 +63,63 @@
         }
 
         .sidebar-logo {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: #3b82f6;
             margin-bottom: 30px;
             text-align: center;
             padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar-logo span {
+            color: #ffffff;
         }
 
         .nav-item {
             display: flex;
             align-items: center;
-            padding: 12px 18px;
-            margin-bottom: 8px;
+            padding: 11px 16px;
+            margin-bottom: 4px;
             border-radius: 10px;
-            color: #d1d5db;
+            color: #9ca3af;
             text-decoration: none;
             transition: all 0.3s ease;
             cursor: pointer;
             font-weight: 500;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .nav-item::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            margin-right: 12px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
         .nav-item:hover {
-            background: rgba(59, 130, 246, 0.2);
-            color: #3b82f6;
-            transform: translateX(5px);
+            background: rgba(59, 130, 246, 0.1);
+            color: #ffffff;
+        }
+
+        .nav-item:hover::before {
+            background: #3b82f6;
         }
 
         .nav-item.active {
-            background: rgba(59, 130, 246, 0.3);
+            background: rgba(59, 130, 246, 0.15);
             color: #3b82f6;
-            border-left: 3px solid #3b82f6;
+        }
+
+        .nav-item.active::before {
+            background: #3b82f6;
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
         }
 
         .nav-item i {
@@ -124,10 +161,10 @@
         }
 
         .page-header h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 700;
             color: #ffffff;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
 
         .page-header p {
@@ -144,8 +181,9 @@
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(59, 130, 246, 0.15) !important;
         }
 
         /* Button styling */
@@ -192,16 +230,35 @@
             animation: fadeIn 0.3s ease-in;
         }
 
+        .chat-message.bot > div {
+            background: rgba(255, 255, 255, 0.04) !important;
+            border: 1px solid rgba(255, 255, 255, 0.06) !important;
+        }
+
+        .chat-message.user > div {
+            background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+        }
+
         /* KPI Cards */
         .kpi-card {
             text-align: center;
             padding: 25px;
             border-radius: 15px;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
         }
 
         .kpi-card:hover {
-            transform: scale(1.05);
+            transform: translateY(-4px);
         }
 
         .kpi-value {
@@ -235,6 +292,20 @@
 
         .contact-card:hover {
             transform: translateY(-5px);
+            border-color: rgba(59, 130, 246, 0.2) !important;
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            border: 2px solid #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #3b82f6;
         }
 
         .contact-email {
@@ -259,7 +330,7 @@
 <body>
     <!-- Sidebar Navigation -->
     <div class="sidebar glass-strong">
-        <div class="sidebar-logo">Meta Consult</div>
+        <div class="sidebar-logo">Meta<span>Consult</span></div>
         <nav>
             <a class="nav-item active" onclick="showSection('home')">
                 <span>Home</span>
@@ -496,14 +567,14 @@
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
                 <div class="card glass-strong contact-card">
-                    <div style="font-size: 3rem; margin-bottom: 15px;">📧</div>
+                    <div class="contact-icon">@</div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #3b82f6;">Email Us</h3>
                     <p style="color: #9ca3af; margin-bottom: 10px;">For inquiries and support:</p>
                     <a href="mailto:i221932@nu.edu.pk" class="contact-email" style="text-decoration: none;">i221932@nu.edu.pk</a>
                 </div>
 
                 <div class="card glass-strong contact-card">
-                    <div style="font-size: 3rem; margin-bottom: 15px;">📧</div>
+                    <div class="contact-icon">@</div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #3b82f6;">Email Us</h3>
                     <p style="color: #9ca3af; margin-bottom: 10px;">For inquiries and support:</p>
                     <a href="mailto:i221975@nu.edu.pk" class="contact-email" style="text-decoration: none;">i221975@nu.edu.pk</a>
@@ -519,6 +590,7 @@
     </div>
 
     <script>
+        const BASE_URL = 'http://localhost:8000';
         // Section Navigation
         function showSection(sectionId) {
             // Hide all sections
@@ -548,26 +620,26 @@
         // Logout functionality
         document.getElementById('logout-btn').addEventListener('click', () => {
             localStorage.removeItem('access_token');
-            window.location.href = '/login';
+            window.location.href = BASE_URL + '/login';
         });
 
         // Load Dashboard Data
         async function loadDashboard() {
             const token = localStorage.getItem('access_token');
             if (!token) {
-                window.location.href = '/login';
+                window.location.href = BASE_URL + '/login';
                 return;
             }
 
             try {
-                const response = await fetch('/user-profile', {
+                const response = await fetch(BASE_URL + '/user-profile', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
 
                 if (response.status === 401) {
-                    window.location.href = '/login';
+                    window.location.href = BASE_URL + '/login';
                     return;
                 }
 
@@ -819,19 +891,19 @@
         async function loadSolution() {
             const token = localStorage.getItem('access_token');
             if (!token) {
-                window.location.href = '/login';
+                window.location.href = BASE_URL + '/login';
                 return;
             }
 
             try {
-                const response = await fetch(`/solution-status?t=${Date.now()}`, {
+                const response = await fetch(BASE_URL + `/solution-status?t=${Date.now()}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
 
                 if (response.status === 401) {
-                    window.location.href = '/login';
+                    window.location.href = BASE_URL + '/login';
                     return;
                 }
 
@@ -883,12 +955,12 @@
             const token = localStorage.getItem('access_token');
             if (!token) {
                 alert('Session expired. Please log in again.');
-                window.location.href = '/login';
+                window.location.href = BASE_URL + '/login';
                 return;
             }
 
             try {
-                const response = await fetch(`/download-solution?t=${Date.now()}`, {
+                const response = await fetch(BASE_URL + `/download-solution?t=${Date.now()}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     },
@@ -898,7 +970,7 @@
                 if (!response.ok) {
                     if (response.status === 401) {
                         alert('Session expired. Please log in again.');
-                        window.location.href = '/login';
+                        window.location.href = BASE_URL + '/login';
                     } else if (response.status === 404) {
                         alert('Solution PDF not found. Please generate a solution first.');
                     } else {
@@ -935,11 +1007,11 @@
             if (!token) {
                 errorMessage.textContent = 'Please log in again.';
                 errorMessage.style.display = 'block';
-                setTimeout(() => window.location.href = '/login', 2000);
+                setTimeout(() => window.location.href = BASE_URL + '/login', 2000);
                 return null;
             }
             try {
-                const response = await fetch('/refresh-token', {
+                const response = await fetch(BASE_URL + '/refresh-token', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -987,7 +1059,7 @@
             if (!token) {
                 errorMessage.textContent = 'Please log in again.';
                 errorMessage.style.display = 'block';
-                setTimeout(() => window.location.href = '/login', 2000);
+                setTimeout(() => window.location.href = BASE_URL + '/login', 2000);
                 sendBtn.disabled = false;
                 loader.style.display = 'none';
                 return;
@@ -1008,7 +1080,7 @@
                     const form = new FormData();
                     form.append('message', message);
                     form.append('file', file);
-                    response = await fetch('/chat-with-file', {
+                    response = await fetch(BASE_URL + '/chat-with-file', {
                         method: 'POST',
                         headers: {
                             'Authorization': `Bearer ${token}`
@@ -1016,7 +1088,7 @@
                         body: form
                     });
                 } else {
-                    response = await fetch('/chat', {
+                    response = await fetch(BASE_URL + '/chat', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -1031,12 +1103,12 @@
                     if (!token) {
                         errorMessage.textContent = 'Session expired. Please log in again.';
                         errorMessage.style.display = 'block';
-                        setTimeout(() => window.location.href = '/login', 2000);
+                        setTimeout(() => window.location.href = BASE_URL + '/login', 2000);
                         sendBtn.disabled = false;
                         loader.style.display = 'none';
                         return;
                     }
-                    response = await fetch('/chat', {
+                    response = await fetch(BASE_URL + '/chat', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -1068,7 +1140,7 @@
                     botMessage.className = 'chat-message bot mb-4 flex';
                     botMessage.innerHTML = `
                         <div style="background: rgba(59, 130, 246, 0.2); color: white; padding: 15px; border-radius: 10px; max-width: 80%;">
-                            <p>✅ Your solution PDF has been downloaded: <strong>${filename}</strong></p>
+                            <p><strong>${filename}</strong><span style="color: #10b981; margin-left: 8px;">Downloaded</span></p>
                             <span style="font-size: 0.75rem; color: #9ca3af; margin-top: 8px; display: block;">
                                 ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                             </span>
@@ -1151,12 +1223,12 @@
             const token = localStorage.getItem('access_token');
             if (!token) {
                 alert('Session expired. Please log in again.');
-                window.location.href = '/login';
+                window.location.href = BASE_URL + '/login';
                 return;
             }
 
             try {
-                const response = await fetch(`/download-solution?t=${Date.now()}`, {
+                const response = await fetch(BASE_URL + `/download-solution?t=${Date.now()}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -1167,7 +1239,7 @@
                 if (!response.ok) {
                     if (response.status === 401) {
                         alert('Session expired. Please log in again.');
-                        window.location.href = '/login';
+                        window.location.href = BASE_URL + '/login';
                     } else if (response.status === 404) {
                         alert('Solution PDF not found. Please generate a solution first.');
                     } else {
@@ -1191,7 +1263,7 @@
                 successMessage.className = 'chat-message bot mb-4 flex';
                 successMessage.innerHTML = `
                     <div style="background: rgba(59, 130, 246, 0.2); color: white; padding: 15px; border-radius: 10px; max-width: 80%;">
-                        <p>✅ Solution PDF downloaded successfully!</p>
+                        <p>Solution PDF downloaded successfully.</p>
                         <span style="font-size: 0.75rem; color: #9ca3af; margin-top: 8px; display: block;">
                             ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
@@ -1215,7 +1287,7 @@
             if (!token) return;
             workflowPolling = setInterval(async () => {
                 try {
-                    const resp = await fetch('/workflow-status', {
+                    const resp = await fetch(BASE_URL + '/workflow-status', {
                         headers: { 'Authorization': `Bearer ${token}` }
                     });
                     if (!resp.ok) return;
