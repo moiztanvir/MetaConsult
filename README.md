@@ -1,6 +1,6 @@
 # MetaConsult — AI-Powered Business Consultancy Platform
 
-> **Final Year Project** | Democratizing high-quality business consultancy through multi-agent AI workflows.
+>  Democratizing high-quality business consultancy through multi-agent AI workflows.
 
 [![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green?logo=fastapi)](https://fastapi.tiangolo.com/)
