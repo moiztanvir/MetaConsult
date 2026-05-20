@@ -4,21 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meta Consult - Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        :root {
+            --bg: #1a1a1a;
+            --accent: #3b82f6;
+            --accent-deep: #2563eb;
+            --text: #ffffff;
+            --muted: #9ca3af;
+            --body: #d1d5db;
+            --border: rgba(255, 255, 255, 0.08);
+            --radius: 14px;
+            --radius-lg: 18px;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background: #1a1a1a;
-            color: #ffffff;
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             overflow-x: hidden;
+            font-size: 15px;
+            line-height: 1.6;
+            letter-spacing: -0.01em;
         }
 
         body::before {
@@ -29,115 +44,122 @@
             z-index: -1;
             pointer-events: none;
             background:
-                radial-gradient(ellipse at 20% 30%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(37, 99, 235, 0.04) 0%, transparent 50%);
+                radial-gradient(ellipse 80% 50% at 15% 20%, rgba(59, 130, 246, 0.09) 0%, transparent 55%),
+                radial-gradient(ellipse 60% 40% at 85% 75%, rgba(37, 99, 235, 0.06) 0%, transparent 50%),
+                linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 120px);
         }
 
-        /* Glassy effect (glassmorphism) */
         .glass {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.035);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.04);
         }
 
         .glass-strong {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+            background: rgba(22, 22, 24, 0.75);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
-        /* Sidebar Navigation */
         .sidebar {
             position: fixed;
             left: 0;
             top: 0;
             height: 100vh;
-            width: 260px;
-            padding: 20px;
+            width: 268px;
+            padding: 24px 18px;
             z-index: 1000;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .sidebar-logo {
-            font-size: 1.6rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.35rem;
             font-weight: 700;
-            color: #3b82f6;
-            margin-bottom: 30px;
-            text-align: center;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            letter-spacing: -0.5px;
+            color: var(--accent);
+            margin-bottom: 28px;
+            text-align: left;
+            padding: 16px 14px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            letter-spacing: -0.03em;
         }
 
         .sidebar-logo span {
-            color: #ffffff;
+            color: var(--text);
+        }
+
+        .sidebar-logo small {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-top: 6px;
         }
 
         .nav-item {
             display: flex;
             align-items: center;
-            padding: 11px 16px;
-            margin-bottom: 4px;
+            padding: 10px 14px;
+            margin-bottom: 2px;
             border-radius: 10px;
-            color: #9ca3af;
+            color: var(--muted);
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: background 0.2s ease, color 0.2s ease;
             cursor: pointer;
             font-weight: 500;
-            font-size: 0.9rem;
-            position: relative;
+            font-size: 0.875rem;
+            border: 1px solid transparent;
         }
 
         .nav-item::before {
             content: '';
-            width: 6px;
-            height: 6px;
+            width: 4px;
+            height: 4px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
             margin-right: 12px;
-            transition: all 0.3s ease;
+            transition: background 0.2s ease, box-shadow 0.2s ease;
             flex-shrink: 0;
         }
 
         .nav-item:hover {
-            background: rgba(59, 130, 246, 0.1);
-            color: #ffffff;
+            background: rgba(59, 130, 246, 0.08);
+            color: #e5e7eb;
         }
 
         .nav-item:hover::before {
-            background: #3b82f6;
+            background: var(--accent);
         }
 
         .nav-item.active {
-            background: rgba(59, 130, 246, 0.15);
-            color: #3b82f6;
+            background: rgba(59, 130, 246, 0.12);
+            color: #93c5fd;
+            border-color: rgba(59, 130, 246, 0.2);
         }
 
         .nav-item.active::before {
-            background: #3b82f6;
-            box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+            background: var(--accent);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
         }
 
-        .nav-item i {
-            margin-right: 12px;
-            font-size: 1.2rem;
-        }
-
-        /* Main Content Area */
         .main-content {
-            margin-left: 260px;
+            margin-left: 268px;
             min-height: 100vh;
-            padding: 30px;
+            padding: 36px 40px 48px;
+            max-width: 1200px;
         }
 
-        /* Section styling */
         .section {
             display: none;
-            animation: fadeIn 0.5s ease-in;
+            animation: fadeIn 0.45s ease-out;
         }
 
         .section.active {
@@ -145,106 +167,434 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Page Header */
         .page-header {
-            margin-bottom: 30px;
+            margin-bottom: 28px;
+        }
+
+        .page-eyebrow {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            margin-bottom: 10px;
         }
 
         .page-header h1 {
-            font-size: 2.2rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1.65rem, 3vw, 2.25rem);
             font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 6px;
+            color: var(--text);
+            margin-bottom: 8px;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
         }
 
         .page-header p {
-            color: #9ca3af;
-            font-size: 1.1rem;
+            color: var(--muted);
+            font-size: 1rem;
+            max-width: 52ch;
         }
 
-        /* Card styling */
         .card {
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 28px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 22px;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
         }
 
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-            border-color: rgba(59, 130, 246, 0.15) !important;
+            border-color: rgba(59, 130, 246, 0.18) !important;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.32);
         }
 
-        /* Button styling */
         .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
             color: white;
-            padding: 12px 30px;
+            padding: 13px 28px;
             border-radius: 10px;
             border: none;
             font-weight: 600;
+            font-size: 0.9375rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             text-decoration: none;
             display: inline-block;
+            letter-spacing: -0.02em;
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 28px rgba(59, 130, 246, 0.35);
         }
 
-        /* Chat interface */
+        /* Landing (home) */
+        .landing-hero {
+            display: grid;
+            gap: 24px;
+            margin-bottom: 28px;
+            padding: 32px 36px;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(22, 22, 24, 0.6) 45%, rgba(255,255,255,0.02) 100%);
+        }
+
+        .landing-hero h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1.75rem, 3.5vw, 2.35rem);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            max-width: 20ch;
+        }
+
+        .landing-hero h2 .grad {
+            background: linear-gradient(90deg, #fff 0%, #93c5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .landing-hero .lead {
+            color: var(--body);
+            font-size: 1.05rem;
+            line-height: 1.75;
+            max-width: 62ch;
+        }
+
+        .landing-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            padding-top: 8px;
+        }
+
+        .landing-meta span {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .landing-meta span strong {
+            color: #e5e7eb;
+            font-weight: 600;
+        }
+
+        .content-block h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #93c5fd;
+            margin: 28px 0 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .content-block h3:first-child {
+            margin-top: 0;
+        }
+
+        .content-block p {
+            color: var(--body);
+            line-height: 1.78;
+            margin-bottom: 14px;
+            font-size: 0.98rem;
+        }
+
+        .benefit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 14px;
+            margin: 20px 0 8px;
+        }
+
+        .benefit-item {
+            padding: 16px 18px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .benefit-item strong {
+            display: block;
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .benefit-item span {
+            font-size: 0.875rem;
+            color: var(--body);
+            line-height: 1.65;
+        }
+
+        .workflow-list {
+            counter-reset: step;
+            list-style: none;
+            margin: 16px 0 0;
+            padding: 0;
+        }
+
+        .workflow-list li {
+            position: relative;
+            padding-left: 48px;
+            margin-bottom: 18px;
+            color: var(--body);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .workflow-list li::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            color: #93c5fd;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .workflow-list li strong {
+            color: #e5e7eb;
+        }
+
+        .cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin-top: 32px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .cta-note {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        /* Documentation */
+        .docs-article {
+            max-width: 800px;
+        }
+
+        .docs-lead {
+            font-size: 1.05rem;
+            color: var(--body);
+            line-height: 1.8;
+            margin-bottom: 32px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .doc-section {
+            margin-bottom: 32px;
+        }
+
+        .doc-section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        .doc-section h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #93c5fd;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .doc-section p {
+            color: var(--body);
+            line-height: 1.78;
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+        }
+
+        .doc-section ul {
+            margin: 12px 0 16px 0;
+            padding-left: 1.25rem;
+            color: var(--body);
+        }
+
+        .doc-section li {
+            margin-bottom: 8px;
+            line-height: 1.65;
+            font-size: 0.95rem;
+        }
+
+        .doc-section li strong {
+            color: #e5e7eb;
+        }
+
+        .doc-callout {
+            margin-top: 28px;
+            padding: 22px 24px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        .doc-callout h3 {
+            margin-top: 0;
+            margin-bottom: 14px;
+        }
+
+        .doc-callout ul {
+            margin-bottom: 0;
+        }
+
+        /* Chat */
+        .chat-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .chat-panel-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #93c5fd;
+        }
+
+        .stage-pill {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
         .chat-box {
             scroll-behavior: smooth;
-            max-height: 60vh;
+            max-height: min(58vh, 520px);
             overflow-y: auto;
+            border-radius: var(--radius);
         }
 
         .chat-box::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
 
         .chat-box::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
             border-radius: 4px;
         }
 
         .chat-box::-webkit-scrollbar-thumb {
-            background: #3b82f6;
+            background: rgba(59, 130, 246, 0.45);
             border-radius: 4px;
         }
 
         .chat-message {
-            animation: fadeIn 0.3s ease-in;
+            animation: fadeIn 0.28s ease-out;
         }
 
         .chat-message.bot > div {
             background: rgba(255, 255, 255, 0.04) !important;
-            border: 1px solid rgba(255, 255, 255, 0.06) !important;
+            border: 1px solid rgba(255, 255, 255, 0.07) !important;
+            border-radius: 12px !important;
         }
 
         .chat-message.user > div {
-            background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+            background: linear-gradient(135deg, var(--accent), var(--accent-deep)) !important;
+            border-radius: 12px !important;
         }
 
-        /* KPI Cards */
+        .chat-composer {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 10px;
+            align-items: center;
+            margin-top: 4px;
+        }
+
+        .chat-input {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: var(--text);
+            outline: none;
+            font-size: 0.9375rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .chat-input:focus {
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+
+        .chat-input::placeholder {
+            color: #6b7280;
+        }
+
+        .btn-send {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
+            color: white;
+            padding: 12px 22px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-send:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
+        }
+
+        .file-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .file-trigger:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(59, 130, 246, 0.06);
+        }
+
         .kpi-card {
-            text-align: center;
-            padding: 25px;
-            border-radius: 15px;
-            transition: all 0.3s ease;
+            text-align: left;
+            padding: 22px 24px;
+            border-radius: var(--radius-lg);
+            transition: border-color 0.2s ease;
             position: relative;
             overflow: hidden;
         }
@@ -252,77 +602,104 @@
         .kpi-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+            top: 0; left: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent), var(--accent-deep));
+            opacity: 0.85;
         }
 
         .kpi-card:hover {
-            transform: translateY(-4px);
+            border-color: rgba(59, 130, 246, 0.15) !important;
         }
 
         .kpi-value {
-            font-size: 2.5rem;
+            font-size: 1.35rem;
             font-weight: 700;
-            color: #3b82f6;
-            margin: 10px 0;
+            color: #e5e7eb;
+            margin: 8px 0 0;
+            font-family: 'Poppins', sans-serif;
         }
 
         .kpi-label {
-            color: #9ca3af;
-            font-size: 0.9rem;
+            color: var(--muted);
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.1em;
+            font-weight: 600;
         }
 
-        /* Chart container */
         .chart-container {
             position: relative;
             height: 300px;
-            margin-top: 20px;
+            margin-top: 16px;
         }
 
-        /* Contact cards */
         .contact-card {
-            padding: 25px;
-            border-radius: 15px;
+            padding: 28px;
+            border-radius: var(--radius-lg);
             text-align: center;
-            transition: all 0.3s ease;
+            transition: border-color 0.2s ease, transform 0.2s ease;
         }
 
         .contact-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(59, 130, 246, 0.2) !important;
+            border-color: rgba(59, 130, 246, 0.22) !important;
         }
 
         .contact-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 15px;
-            border: 2px solid #3b82f6;
-            border-radius: 50%;
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 16px;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            color: #3b82f6;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent);
+            background: rgba(59, 130, 246, 0.08);
         }
 
         .contact-email {
-            color: #3b82f6;
-            font-size: 1.2rem;
+            color: var(--accent);
+            font-size: 1rem;
             font-weight: 600;
-            margin-top: 15px;
+            margin-top: 12px;
             word-break: break-all;
         }
 
-        /* Responsive */
+        .spinner-wrap {
+            text-align: center;
+            padding: 48px 24px;
+        }
+
+        .spinner {
+            border: 3px solid rgba(59, 130, 246, 0.12);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            animation: spin 0.85s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
             }
             .main-content {
                 margin-left: 0;
+                padding: 24px 18px 40px;
+            }
+            .landing-hero {
+                padding: 24px 20px;
             }
         }
     </style>
@@ -330,7 +707,7 @@
 <body>
     <!-- Sidebar Navigation -->
     <div class="sidebar glass-strong">
-        <div class="sidebar-logo">Meta<span>Consult</span></div>
+        <div class="sidebar-logo">Meta<span>Consult</span><small>Intelligent advisory</small></div>
         <nav>
             <a class="nav-item active" onclick="showSection('home')">
                 <span>Home</span>
@@ -361,48 +738,52 @@
         <!-- Home Section -->
         <section id="home-section" class="section active">
             <div class="page-header">
+                <p class="page-eyebrow">Overview</p>
                 <h1>Welcome to Meta Consult</h1>
-                <p>AI-Powered Business Consultancy</p>
+                <p>Structured analysis and solution design powered by a coordinated multi-agent system.</p>
             </div>
-            
-            <div class="card glass-strong">
-                <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: #3b82f6;">About Meta Consult</h2>
-                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
-                    Meta Consult is an innovative AI-powered business consultancy platform designed to revolutionize how companies approach problem-solving and strategic planning. We leverage cutting-edge artificial intelligence and multi-agent workflows to provide comprehensive, data-driven solutions tailored to your specific business challenges.
-                </p>
-                
-                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">Our Mission</h3>
-                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
-                    Our mission is to democratize access to high-quality business consultancy by combining the power of artificial intelligence with deep domain expertise. We help businesses of all sizes identify problems, analyze root causes, and develop actionable solutions that drive growth, optimize operations, and enhance competitive positioning.
-                </p>
 
-                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">Key Benefits</h3>
-                <ul style="line-height: 2; font-size: 1.1rem; color: #d1d5db; margin-left: 20px; margin-bottom: 20px;">
-                    <li><strong style="color: #3b82f6;">Intelligent Problem Analysis:</strong> Our AI agents conduct thorough analysis of your business challenges, identifying underlying issues and their interconnected impacts.</li>
-                    <li><strong style="color: #3b82f6;">Multi-Agent Collaboration:</strong> Specialized AI agents work together, each focusing on different aspects like strategic planning, market research, technology solutions, and management strategies.</li>
-                    <li><strong style="color: #3b82f6;">Comprehensive Solutions:</strong> Receive detailed, actionable solution reports backed by real-world research and best practices from across industries.</li>
-                    <li><strong style="color: #3b82f6;">Data-Driven Insights:</strong> Leverage web search capabilities to incorporate the latest market trends, industry benchmarks, and successful case studies into your solutions.</li>
-                    <li><strong style="color: #3b82f6;">Streamlined Workflow:</strong> From initial conversation to final solution report, our agentic workflow automates complex processes, saving time and ensuring consistency.</li>
-                    <li><strong style="color: #3b82f6;">Personalized Approach:</strong> Every solution is tailored to your company's specific context, industry, and unique challenges.</li>
-                </ul>
+            <div class="landing-hero glass-strong">
+                <h2><span class="grad">Clarity for complex business decisions</span></h2>
+                <p class="lead">Meta Consult combines conversational discovery with automated research and synthesis so your team moves from ambiguity to an implementation-ready plan without losing rigor.</p>
+                <div class="landing-meta">
+                    <span><strong>Multi-agent</strong> orchestration</span>
+                    <span><strong>Evidence-backed</strong> recommendations</span>
+                    <span><strong>PDF</strong> deliverables</span>
+                </div>
+            </div>
 
-                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">Agentic Workflow</h3>
-                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
-                    Meta Consult employs a sophisticated multi-agent workflow that transforms your business conversations into comprehensive solutions:
-                </p>
-                <ol style="line-height: 2; font-size: 1.1rem; color: #d1d5db; margin-left: 20px; margin-bottom: 20px;">
-                    <li><strong style="color: #3b82f6;">Conversation Phase:</strong> Our AI consultant engages in detailed conversations to understand your business challenges, asking targeted questions to gather comprehensive information.</li>
-                    <li><strong style="color: #3b82f6;">Proposal Generation:</strong> Once sufficient information is gathered, our Proposal Agent generates a structured problem analysis document that outlines the issues, their root causes, and impacts across financial, operational, and strategic dimensions.</li>
-                    <li><strong style="color: #3b82f6;">Domain Classification:</strong> The Planner Agent analyzes your proposal using advanced reasoning to classify it into relevant strategic domains (Strategic Planning, Market Research, Technology, Management, etc.).</li>
-                    <li><strong style="color: #3b82f6;">Web Search & Research:</strong> Specialized Web Search Agents search the internet for solutions, case studies, and best practices in the identified domains, gathering actionable insights from across industries.</li>
-                    <li><strong style="color: #3b82f6;">Solution Generation:</strong> Our AI synthesizes all gathered information to create a comprehensive solution report with implementation roadmaps, risk mitigation strategies, and expected ROI.</li>
-                    <li><strong style="color: #3b82f6;">Document Delivery:</strong> Receive your solution as a professionally formatted PDF document ready for implementation.</li>
+            <div class="card glass-strong content-block">
+                <h3>About the platform</h3>
+                <p>Meta Consult is an AI-assisted business consultancy workflow. It helps organizations frame problems, surface root causes, and produce actionable recommendations using specialized agents, retrieval, and structured reporting—aligned to your industry and context.</p>
+
+                <h3>Mission</h3>
+                <p>We aim to make high-quality strategic support more accessible by pairing domain-style reasoning with repeatable process: consistent documentation, transparent stages, and outputs your stakeholders can review and execute.</p>
+
+                <h3>What you gain</h3>
+                <div class="benefit-grid">
+                    <div class="benefit-item"><strong>Structured discovery</strong><span>Guided dialogue captures constraints, goals, and operational detail before analysis begins.</span></div>
+                    <div class="benefit-item"><strong>Coordinated agents</strong><span>Dedicated steps for proposal, planning, domain routing, and research reduce blind spots.</span></div>
+                    <div class="benefit-item"><strong>Implementation focus</strong><span>Deliverables emphasize roadmaps, risks, and expected impact—not generic advice.</span></div>
+                    <div class="benefit-item"><strong>External grounding</strong><span>Web research augments the model with current practices and comparable cases where relevant.</span></div>
+                    <div class="benefit-item"><strong>End-to-end flow</strong><span>From first message through PDF handoff, the pipeline is designed for traceability.</span></div>
+                    <div class="benefit-item"><strong>Your context first</strong><span>Outputs reflect your company profile, sector, and the challenge you described.</span></div>
+                </div>
+
+                <h3>How the workflow runs</h3>
+                <p>Each engagement follows a clear sequence so quality stays predictable as complexity grows.</p>
+                <ol class="workflow-list">
+                    <li><strong>Discovery</strong> — The consultant elicits scope, stakeholders, and success criteria through targeted questions.</li>
+                    <li><strong>Proposal</strong> — A structured problem brief captures causes, impacts, and constraints across finance, operations, and strategy.</li>
+                    <li><strong>Classification</strong> — A planner routes the work to the right domains (for example strategy, market, technology, or management).</li>
+                    <li><strong>Research</strong> — Search-oriented agents gather external references, patterns, and benchmarks tied to those domains.</li>
+                    <li><strong>Synthesis</strong> — The system merges conversation, analysis, and research into a cohesive solution narrative.</li>
+                    <li><strong>Delivery</strong> — You receive a formatted PDF suitable for review, approval, and program kickoff.</li>
                 </ol>
 
-                <div style="text-align: center; margin-top: 40px;">
-                    <button onclick="showSection('chat')" class="btn-primary" style="font-size: 1.2rem; padding: 15px 40px;">
-                        Start Chat →
-                    </button>
+                <div class="cta-row">
+                    <button type="button" onclick="showSection('chat')" class="btn-primary">Open consultant chat</button>
+                    <span class="cta-note">Use the Chat section to begin a new session when you are ready.</span>
                 </div>
             </div>
         </section>
@@ -410,14 +791,15 @@
         <!-- Dashboard Section -->
         <section id="dashboard-section" class="section">
             <div class="page-header">
+                <p class="page-eyebrow">Workspace</p>
                 <h1>Dashboard</h1>
-                <p>Your Business Insights at a Glance</p>
+                <p>Profile snapshot and reference charts for your organization.</p>
             </div>
 
             <div id="dashboard-content">
-                <div style="text-align: center; padding: 40px;">
-                    <div class="spinner" style="border: 4px solid rgba(59, 130, 246, 0.1); border-top: 4px solid #3b82f6; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
-                    <p style="margin-top: 20px; color: #9ca3af;">Loading dashboard data...</p>
+                <div class="spinner-wrap glass-strong card">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 18px; color: #9ca3af; font-size: 0.9rem;">Loading dashboard data</p>
                 </div>
             </div>
         </section>
@@ -425,76 +807,76 @@
         <!-- Docs Section -->
         <section id="docs-section" class="section">
             <div class="page-header">
+                <p class="page-eyebrow">Reference</p>
                 <h1>Documentation</h1>
-                <p>How Meta Consult Works</p>
+                <p>How Meta Consult structures an engagement from intake to deliverable.</p>
             </div>
 
-            <div class="card glass-strong">
-                <h2 style="font-size: 1.8rem; margin-bottom: 20px; color: #3b82f6;">How It Works</h2>
-                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 25px;">
-                    Meta Consult leverages a sophisticated multi-agent AI system to transform your business challenges into actionable solutions. Here's how our unique workflow operates:
-                </p>
+            <div class="card glass-strong docs-article">
+                <p class="docs-lead">Meta Consult uses a staged pipeline: conversational intake, formalized problem analysis, domain routing, targeted research, and consolidated reporting. The sections below mirror what you will see as a session advances.</p>
 
-                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">1. Initial Consultation</h3>
-                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
-                    Begin by chatting with our AI consultant about your business challenges. The system asks targeted questions to understand your company's context, industry, specific problems, and desired outcomes. This conversation phase ensures we have comprehensive information before moving to analysis.
-                </p>
+                <div class="doc-section">
+                    <h2>Stage 1</h2>
+                    <h3>Initial consultation</h3>
+                    <p>You begin in the chat interface. The model asks focused questions about your organization, constraints, and desired outcomes. The goal is sufficient context before any automated document is produced.</p>
+                </div>
 
-                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">2. Problem Analysis & Proposal Generation</h3>
-                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
-                    After gathering sufficient information (typically after 5+ exchanges), our Proposal Agent automatically generates a detailed problem analysis document. This document includes:
-                </p>
-                <ul style="line-height: 2; font-size: 1.1rem; color: #d1d5db; margin-left: 20px; margin-bottom: 20px;">
-                    <li>Executive Summary of the problem</li>
-                    <li>Detailed Problem Statement</li>
-                    <li>Key Reasons and Root Causes</li>
-                    <li>Financial Impact Analysis</li>
-                    <li>Operational Impact Assessment</li>
-                    <li>Strategic Impact Evaluation</li>
-                </ul>
+                <div class="doc-section">
+                    <h2>Stage 2</h2>
+                    <h3>Problem analysis and proposal</h3>
+                    <p>After enough turns (typically five or more exchanges), a proposal agent assembles a structured brief. That document usually covers:</p>
+                    <ul>
+                        <li>Executive summary</li>
+                        <li>Problem statement</li>
+                        <li>Drivers and root causes</li>
+                        <li>Financial, operational, and strategic impact</li>
+                    </ul>
+                </div>
 
-                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">3. Domain Classification</h3>
-                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
-                    Our Planner Agent uses advanced AI reasoning to analyze your proposal and classify it into one or more strategic domains:
-                </p>
-                <ul style="line-height: 2; font-size: 1.1rem; color: #d1d5db; margin-left: 20px; margin-bottom: 20px;">
-                    <li><strong style="color: #3b82f6;">Strategic Planning:</strong> Long-term vision, growth strategies, competitive positioning</li>
-                    <li><strong style="color: #3b82f6;">Market Research:</strong> Market analysis, customer insights, competitive intelligence</li>
-                    <li><strong style="color: #3b82f6;">Technology Solutions:</strong> Digital transformation, IT strategy, automation</li>
-                    <li><strong style="color: #3b82f6;">Management:</strong> Organizational structure, process optimization, team management</li>
-                </ul>
+                <div class="doc-section">
+                    <h2>Stage 3</h2>
+                    <h3>Domain classification</h3>
+                    <p>A planner reviews the proposal and assigns one or more domains so downstream research stays relevant. Examples include:</p>
+                    <ul>
+                        <li><strong>Strategic planning</strong> — growth, positioning, portfolio choices</li>
+                        <li><strong>Market research</strong> — customers, competition, demand signals</li>
+                        <li><strong>Technology</strong> — systems, automation, digital enablement</li>
+                        <li><strong>Management</strong> — operating model, processes, leadership cadence</li>
+                    </ul>
+                </div>
 
-                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">4. Web Search & Research</h3>
-                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
-                    Once domains are identified, specialized Web Search Agents automatically search the internet for:
-                </p>
-                <ul style="line-height: 2; font-size: 1.1rem; color: #d1d5db; margin-left: 20px; margin-bottom: 20px;">
-                    <li>Industry best practices and case studies</li>
-                    <li>Successful solutions implemented by similar companies</li>
-                    <li>Latest trends and innovations in relevant domains</li>
-                    <li>Tools, technologies, and methodologies applicable to your challenge</li>
-                </ul>
+                <div class="doc-section">
+                    <h2>Stage 4</h2>
+                    <h3>Web search and research</h3>
+                    <p>For each active domain, search-oriented agents retrieve external material to ground recommendations. Typical sources of value include:</p>
+                    <ul>
+                        <li>Documented practices and implementation patterns</li>
+                        <li>Comparable situations and published outcomes</li>
+                        <li>Current trends where timing matters to the recommendation</li>
+                        <li>Tools or methods that map cleanly to your stated constraints</li>
+                    </ul>
+                </div>
 
-                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">5. Solution Generation</h3>
-                <p style="line-height: 1.8; font-size: 1.1rem; color: #d1d5db; margin-bottom: 20px;">
-                    Our AI synthesizes all gathered information—your conversation, problem analysis, domain classification, and web research—to generate a comprehensive solution report. This report includes:
-                </p>
-                <ul style="line-height: 2; font-size: 1.1rem; color: #d1d5db; margin-left: 20px; margin-bottom: 20px;">
-                    <li>Executive Summary with key recommendations</li>
-                    <li>Detailed solution breakdown with implementation phases</li>
-                    <li>Step-by-step implementation roadmap</li>
-                    <li>Risk mitigation strategies</li>
-                    <li>Expected results and ROI analysis</li>
-                </ul>
+                <div class="doc-section">
+                    <h2>Stage 5</h2>
+                    <h3>Solution generation</h3>
+                    <p>The system merges your narrative, the proposal, domain tags, and retrieved evidence into a single solution report. Expect:</p>
+                    <ul>
+                        <li>An executive summary and prioritized actions</li>
+                        <li>Phased implementation guidance</li>
+                        <li>Risk and dependency discussion</li>
+                        <li>Expected outcomes framed in business terms</li>
+                    </ul>
+                </div>
 
-                <h3 style="font-size: 1.5rem; margin-top: 30px; margin-bottom: 15px; color: #3b82f6;">What Makes Us Different</h3>
-                <div style="background: rgba(59, 130, 246, 0.1); padding: 25px; border-radius: 10px; margin-top: 20px;">
-                    <ul style="line-height: 2; font-size: 1.1rem; color: #d1d5db; margin-left: 20px;">
-                        <li><strong style="color: #3b82f6;">Multi-Agent Architecture:</strong> Unlike single-AI systems, we use specialized agents that collaborate, ensuring comprehensive coverage of all aspects of your challenge.</li>
-                        <li><strong style="color: #3b82f6;">Real-World Research Integration:</strong> Our solutions are grounded in actual case studies and industry practices, not just theoretical knowledge.</li>
-                        <li><strong style="color: #3b82f6;">Automated Workflow:</strong> The entire process from conversation to solution is automated, ensuring consistency and speed while maintaining quality.</li>
-                        <li><strong style="color: #3b82f6;">Personalized Context:</strong> Every solution is tailored to your specific company, industry, and challenges, not generic templates.</li>
-                        <li><strong style="color: #3b82f6;">Transparent Process:</strong> You can see each stage of the workflow as it progresses, understanding how your solution is being developed.</li>
+                <div class="doc-callout">
+                    <h3>Differentiators</h3>
+                    <ul>
+                        <li><strong>Multi-agent design</strong> — separation of proposal, planning, search, and synthesis reduces single-model overload.</li>
+                        <li><strong>External grounding</strong> — research steps pull in material beyond static training data where appropriate.</li>
+                        <li><strong>Repeatable pipeline</strong> — the same stages apply to every engagement for predictable artifacts.</li>
+                        <li><strong>Account-specific context</strong> — profile fields and chat history inform the final narrative.</li>
+                        <li><strong>Observable progress</strong> — stage labels in the product reflect how far a session has moved.</li>
                     </ul>
                 </div>
             </div>
@@ -503,57 +885,57 @@
         <!-- Chat Section -->
         <section id="chat-section" class="section">
             <div class="page-header">
-                <h1>Meta Consult Chatbot</h1>
-                <p>Ask questions about your business challenges</p>
+                <p class="page-eyebrow">Session</p>
+                <h1>Consultant chat</h1>
+                <p>Describe your situation; the system will guide discovery and produce artifacts as thresholds are met.</p>
             </div>
 
             <div class="card glass-strong">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2 style="font-size: 1.8rem; color: #3b82f6;">Conversation</h2>
-                    <div style="font-size: 0.875rem; color: #9ca3af;">
-                        <span id="conversation-stage">Questioning Phase</span>
-                    </div>
+                <div class="chat-panel-header">
+                    <h2>Conversation</h2>
+                    <div class="stage-pill" id="conversation-stage-wrap"><span id="conversation-stage">Questioning phase</span></div>
                 </div>
-                
-                <div id="chat-box" class="chat-box glass" style="padding: 20px; margin-bottom: 20px;">
+
+                <div id="chat-box" class="chat-box glass" style="padding: 20px; margin-bottom: 16px;">
                     <div class="chat-message bot mb-4 flex">
-                        <div style="background: rgba(59, 130, 246, 0.2); color: white; padding: 15px; border-radius: 10px; max-width: 80%;">
-                            <p>Welcome to Meta Consult! How can I assist your business today?</p>
-                            <span style="font-size: 0.75rem; color: #9ca3af; margin-top: 8px; display: block;">
+                        <div style="background: rgba(59, 130, 246, 0.12); color: white; padding: 14px 16px; border-radius: 12px; max-width: 80%; border: 1px solid rgba(59, 130, 246, 0.2);">
+                            <p style="font-size: 0.95rem; line-height: 1.6;">Welcome to Meta Consult. How can we support your business today?</p>
+                            <span style="font-size: 0.72rem; color: #9ca3af; margin-top: 8px; display: block;">
                                 <script>document.write(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))</script>
                             </span>
                         </div>
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr auto auto auto; gap: 10px; align-items: center;">
-                    <input id="chat-input" type="text" placeholder="Type your message..." style="grid-column: 1; background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(59, 130, 246, 0.3); border-radius: 10px; padding: 12px; color: white; outline: none;" />
-                    <label for="file-input" style="grid-column: 2; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 10px;">
-                        <img src="/static/icon.png" alt="Upload File" style="width: 32px; height: 32px; opacity: 0.8; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'" />
+                <div class="chat-composer">
+                    <input id="chat-input" class="chat-input" type="text" placeholder="Type your message" />
+                    <label for="file-input" class="file-trigger" title="Attach file">
+                        <img src="/static/icon.png" alt="" width="28" height="28" style="opacity: 0.85;" />
                     </label>
                     <input id="file-input" type="file" accept=".txt,.csv,.xlsx,.xls,.pdf,.docx" style="display: none;" />
-                    <button id="send-btn" style="grid-column: 3; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; padding: 12px 25px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(59, 130, 246, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">Send</button>
+                    <button type="button" id="send-btn" class="btn-send">Send</button>
                 </div>
 
-                <div id="loader" style="display: none; margin-top: 15px; text-align: center;">
-                    <div style="border: 4px solid rgba(59, 130, 246, 0.1); border-top: 4px solid #3b82f6; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                <div id="loader" style="display: none; margin-top: 16px; text-align: center;">
+                    <div class="spinner" style="width: 28px; height: 28px; margin: 0 auto;"></div>
                 </div>
-                <p id="error-message" style="display: none; text-align: center; margin-top: 15px; color: #ef4444;"></p>
-                <p id="success-message" style="display: none; text-align: center; margin-top: 15px; color: #10b981;">Message sent!</p>
+                <p id="error-message" style="display: none; text-align: center; margin-top: 14px; color: #ef4444; font-size: 0.9rem;"></p>
+                <p id="success-message" style="display: none; text-align: center; margin-top: 14px; color: #10b981; font-size: 0.9rem;">Message sent</p>
             </div>
         </section>
 
         <!-- Solution Section -->
         <section id="solution-section" class="section">
             <div class="page-header">
-                <h1>Solution Report</h1>
-                <p>Access your generated solution documents</p>
+                <p class="page-eyebrow">Deliverables</p>
+                <h1>Solution report</h1>
+                <p>Download the latest PDF produced for your account.</p>
             </div>
 
             <div id="solution-content">
-                <div style="text-align: center; padding: 40px;">
-                    <div class="spinner" style="border: 4px solid rgba(59, 130, 246, 0.1); border-top: 4px solid #3b82f6; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
-                    <p style="margin-top: 20px; color: #9ca3af;">Checking for solution...</p>
+                <div class="spinner-wrap glass-strong card">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 18px; color: #9ca3af; font-size: 0.9rem;">Checking for solution</p>
                 </div>
             </div>
         </section>
@@ -561,29 +943,30 @@
         <!-- Contact Section -->
         <section id="contact-section" class="section">
             <div class="page-header">
-                <h1>Contact Us</h1>
-                <p>Get in touch with our team</p>
+                <p class="page-eyebrow">Support</p>
+                <h1>Contact</h1>
+                <p>Reach the team for product questions or account assistance.</p>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px;">
                 <div class="card glass-strong contact-card">
-                    <div class="contact-icon">@</div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #3b82f6;">Email Us</h3>
-                    <p style="color: #9ca3af; margin-bottom: 10px;">For inquiries and support:</p>
+                    <div class="contact-icon">Mail</div>
+                    <h3 style="font-family: 'Poppins', sans-serif; font-size: 1.1rem; margin-bottom: 10px; color: #93c5fd;">Primary contact</h3>
+                    <p style="color: #9ca3af; margin-bottom: 8px; font-size: 0.9rem;">Inquiries and support</p>
                     <a href="mailto:i221932@nu.edu.pk" class="contact-email" style="text-decoration: none;">i221932@nu.edu.pk</a>
                 </div>
 
                 <div class="card glass-strong contact-card">
-                    <div class="contact-icon">@</div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #3b82f6;">Email Us</h3>
-                    <p style="color: #9ca3af; margin-bottom: 10px;">For inquiries and support:</p>
+                    <div class="contact-icon">Mail</div>
+                    <h3 style="font-family: 'Poppins', sans-serif; font-size: 1.1rem; margin-bottom: 10px; color: #93c5fd;">Secondary contact</h3>
+                    <p style="color: #9ca3af; margin-bottom: 8px; font-size: 0.9rem;">Inquiries and support</p>
                     <a href="mailto:i221975@nu.edu.pk" class="contact-email" style="text-decoration: none;">i221975@nu.edu.pk</a>
                 </div>
             </div>
 
-            <div class="card glass-strong" style="margin-top: 30px; text-align: center; padding: 30px;">
-                <p style="font-size: 1.1rem; line-height: 1.8; color: #d1d5db;">
-                    We're here to help! Whether you have questions about Meta Consult, need assistance with your account, or want to learn more about our AI-powered consultancy services, don't hesitate to reach out. Our team is committed to providing excellent support and ensuring you get the most out of our platform.
+            <div class="card glass-strong" style="margin-top: 24px; padding: 28px 32px;">
+                <p style="font-size: 0.95rem; line-height: 1.75; color: #d1d5db; max-width: 72ch;">
+                    For questions about Meta Consult, help with your account, or a walkthrough of the consultancy workflow, use the addresses above. We aim to respond with clear next steps so you can keep momentum on your project.
                 </p>
             </div>
         </section>
@@ -593,23 +976,20 @@
         const BASE_URL = 'http://localhost:8000';
         // Section Navigation
         function showSection(sectionId) {
-            // Hide all sections
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
             });
 
-            // Remove active class from all nav items
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
+                const oc = item.getAttribute('onclick');
+                if (oc && oc.indexOf("showSection('" + sectionId + "')") !== -1) {
+                    item.classList.add('active');
+                }
             });
 
-            // Show selected section
             document.getElementById(sectionId + '-section').classList.add('active');
 
-            // Add active class to clicked nav item
-            event.target.closest('.nav-item').classList.add('active');
-
-            // Load section-specific data
             if (sectionId === 'dashboard') {
                 loadDashboard();
             } else if (sectionId === 'solution') {
@@ -924,26 +1304,26 @@
             if (solutionData.exists) {
                 document.getElementById('solution-content').innerHTML = `
                     <div class="card glass-strong" style="text-align: center; padding: 40px;">
-                        <h2 style="font-size: 2rem; margin-bottom: 15px; color: #3b82f6;">Solution Generated!</h2>
-                        <p style="font-size: 1.2rem; color: #d1d5db; margin-bottom: 30px;">
-                            Your solution PDF has been generated and is ready for download.
+                        <h2 style="font-family: 'Poppins', sans-serif; font-size: 1.5rem; margin-bottom: 12px; color: #93c5fd;">Solution ready</h2>
+                        <p style="font-size: 1rem; color: #d1d5db; margin-bottom: 28px; max-width: 42ch; margin-left: auto; margin-right: auto;">
+                            Your solution PDF is available for download.
                         </p>
-                        <p style="color: #9ca3af; margin-bottom: 8px;">Account: ${solutionData.account_email || 'N/A'}</p>
-                        <p style="color: #9ca3af; margin-bottom: 30px;">Filename: ${solutionData.filename}</p>
-                        <button onclick="downloadSolution()" class="btn-primary" style="font-size: 1.1rem; padding: 15px 40px;">
-                            Download Solution PDF
+                        <p style="color: #9ca3af; margin-bottom: 6px; font-size: 0.85rem;">Account: ${solutionData.account_email || 'N/A'}</p>
+                        <p style="color: #9ca3af; margin-bottom: 28px; font-size: 0.85rem;">File: ${solutionData.filename}</p>
+                        <button type="button" onclick="downloadSolution()" class="btn-primary" style="font-size: 0.95rem; padding: 14px 32px;">
+                            Download PDF
                         </button>
                     </div>
                 `;
             } else {
                 document.getElementById('solution-content').innerHTML = `
                     <div class="card glass-strong" style="text-align: center; padding: 40px;">
-                        <h2 style="font-size: 2rem; margin-bottom: 15px; color: #9ca3af;">No Solution Generated</h2>
-                        <p style="font-size: 1.2rem; color: #d1d5db; margin-bottom: 30px;">
-                            You haven't generated a solution yet. Start a chat to begin the process!
+                        <h2 style="font-family: 'Poppins', sans-serif; font-size: 1.35rem; margin-bottom: 12px; color: #9ca3af;">No solution yet</h2>
+                        <p style="font-size: 1rem; color: #d1d5db; margin-bottom: 28px; max-width: 44ch; margin-left: auto; margin-right: auto;">
+                            Start a consultant chat to run the workflow and generate your first report.
                         </p>
-                        <button onclick="showSection('chat')" class="btn-primary" style="font-size: 1.1rem; padding: 15px 40px;">
-                            Go to Chat →
+                        <button type="button" onclick="showSection('chat')" class="btn-primary" style="font-size: 0.95rem; padding: 14px 32px;">
+                            Open chat
                         </button>
                     </div>
                 `;
@@ -1200,21 +1580,21 @@
         function updateConversationStage(response) {
             const stageElement = document.getElementById('conversation-stage');
             if (response.includes("Would you like Meta Consult to create")) {
-                stageElement.textContent = "Ready for Proposal";
-                stageElement.style.color = "#3b82f6";
+                stageElement.textContent = "Ready for proposal";
+                stageElement.style.color = "#93c5fd";
             } else if (response.includes("Proposal Generated Successfully")) {
-                stageElement.textContent = "Ready for Analysis";
-                stageElement.style.color = "#3b82f6";
+                stageElement.textContent = "Ready for analysis";
+                stageElement.style.color = "#93c5fd";
             } else if (response.includes("Proposal Analysis Complete")) {
-                stageElement.textContent = "Domain Analysis";
-                stageElement.style.color = "#3b82f6";
+                stageElement.textContent = "Domain analysis";
+                stageElement.style.color = "#93c5fd";
             } else if (response.includes("Market Research") || response.includes("Strategic Planning") || 
                       response.includes("Management") || response.includes("Technology")) {
-                stageElement.textContent = "Solution Planning";
-                stageElement.style.color = "#3b82f6";
+                stageElement.textContent = "Solution planning";
+                stageElement.style.color = "#93c5fd";
             } else {
-                stageElement.textContent = "Questioning Phase";
-                stageElement.style.color = "#fbbf24";
+                stageElement.textContent = "Questioning phase";
+                stageElement.style.color = "#94a3b8";
             }
         }
 
@@ -1334,16 +1714,6 @@
                 workflowPolling = null;
             }
         }
-
-        // Add spin animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
