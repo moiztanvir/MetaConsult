@@ -33,7 +33,6 @@
 - [Frontend Pages](#frontend-pages)
 - [Security](#security)
 - [Contributing](#contributing)
-- [License](#license)
 
 ---
 
@@ -432,19 +431,13 @@ The primary consultancy interface. Features a real-time chat window, a workflow 
 
 ## Contributing
 
-This is a final year academic project. Contributions, suggestions, and feedback are welcome.
+Contributions, suggestions, and feedback are welcome.
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/your-feature`)
 3. Commit your changes (`git commit -m 'Add your feature'`)
 4. Push to the branch (`git push origin feature/your-feature`)
 5. Open a Pull Request
-
----
-
-## License
-
-This project is developed as a Final Year Project. All rights reserved by the authors.
 
 ---
 
